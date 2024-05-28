@@ -1,7 +1,14 @@
 import React from 'react'
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function MainPage() {
+export default function MainPage({ navigation }) {
+
+    const handleAP = () => {
+        console.log("AP Pressed")
+        navigation.navigate('CreateAccount');
+    }
+
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}
@@ -15,7 +22,9 @@ export default function MainPage() {
                     fontWeight: "500",
                     marginLeft: 10,
                 }}>Choose a Study Room</Text>
-                <View style={styles.dummyProfile}></View>
+                <View style={styles.dummyProfile}>
+                    <Icon name="user-circle-o" size={45} color="white" />
+                </View>
             </View>
 
             <View style={styles.topFloor}>
@@ -23,7 +32,7 @@ export default function MainPage() {
                     fontSize: 20,
                     color: "white",
                 }}>Top Floor</Text>
-                <TouchableOpacity style={styles.floorBtn}>
+                <TouchableOpacity style={styles.floorBtn} onPress={handleAP}>
                     <Text style={{ fontSize: 20, paddingLeft: 20, }}>A-P</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.floorBtn}>
@@ -65,7 +74,6 @@ const styles = StyleSheet.create(
         dummyProfile: {
             width: 50,
             height: 50,
-            backgroundColor: "white",
             borderRadius: 50,
             marginLeft: 60,
         },

@@ -6,8 +6,13 @@ export default function MainPage({ navigation }) {
 
     const handleAP = () => {
         console.log("AP Pressed")
-        navigation.navigate('CreateAccount');
+        navigation.navigate('Profile');
     }
+
+    const handleProfile = () => {
+        navigation.navigate('Profile');
+    }
+
 
     return (
         <ImageBackground
@@ -22,9 +27,12 @@ export default function MainPage({ navigation }) {
                     fontWeight: "500",
                     marginLeft: 10,
                 }}>Choose a Study Room</Text>
-                <View style={styles.dummyProfile}>
-                    <Icon name="user-circle-o" size={45} color="white" />
-                </View>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                    <View style={styles.dummyProfile}>
+                        <Icon name="user-circle-o" size={45} color="white" />
+                    </View>
+                </TouchableOpacity>
             </View>
 
             <View style={styles.topFloor}>

@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
+import CheckBox from '../components/CheckBox';
 
-export default function CreateAccount() {
-    const [StudentID, setStudentID] = useState(''); // I added this line
+
+export default function CreateAccount({ navigation }) { //navigation varsa handle et
+    const [StudentID, setStudentID] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
+    const [isGreenSelected, setIsGreenSelected] = useState(false);
+
+    const handleSignUp = () => {
+        console.log('StudentID:', StudentID);
+        console.log('Email:', email);
+
+    }
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}
@@ -101,8 +110,27 @@ export default function CreateAccount() {
                     </View>
 
                     <View style={styles.checkboxContainer}>
-                        <Text> KVKK</Text>
+                        <CheckBox
+                            text={""}
+                            isChecked={isGreenSelected}
+                            onPress={() => setIsGreenSelected(!isGreenSelected)}
+                            container={styles.checkBox}
+
+                        />
+                        <Text> Terms of Use and Privacy Policy</Text>
+
                     </View>
+
+                    <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+                        <ImageBackground
+                            source={require("../assets/images/btn_back.png")}
+                            style={styles.signUpBack}
+                            resizeMode="cover"
+                            imageStyle={styles.loginImageStyle}
+                        >
+                            <Text style={styles.signUpText}>SIGN UP</Text>
+                        </ImageBackground>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -138,6 +166,7 @@ const styles = StyleSheet.create(
             flex: 1,
             width: "100%",
             alignItems: "center",
+            justifyContent: "center",
             backgroundColor: "white",
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
@@ -190,7 +219,32 @@ const styles = StyleSheet.create(
             marginTop: 20,
         },
         checkbox: {
-            alignSelf: 'center',
+            marginHorizontal: 10,
+            marginVertical: 5,
+        },
+        signUpButton: {
+            borderRadius: 12,
+            width: 200,
+            marginLeft: 33,
+        },
+        signUpText: {
+            color: '#fff',
+            fontSize: 20,
+            fontWeight: 'bold',
+            textAlign: 'center',
+        }, loginImageStyle: {
+            borderRadius: 12,
+
+        },
+
+        signUpBack: {
+            width: '100%',
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 50,
+            marginTop: 50,
+            marginLeft: 20
         },
     }
 )

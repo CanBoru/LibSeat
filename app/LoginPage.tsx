@@ -22,14 +22,13 @@ export default function LoginPage({ navigation }) {
         console.log('Forgot Password Request');
     };
     const handlePress = () => {
-        // useNavigation.navigate('LoginPage');
+        navigation.navigate('CreateAccount');
 
 
     };
     const handleGradPress = () => {
         Alert.alert('Button Pressed!');
     };
-
 
 
     return (

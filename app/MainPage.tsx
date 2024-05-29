@@ -6,7 +6,7 @@ export default function MainPage({ navigation }) {
 
     const handleAP = () => {
         console.log("AP Pressed")
-        navigation.navigate('Reservation');
+        navigation.navigate('APRoom');
     }
 
     const handleProfile = () => {

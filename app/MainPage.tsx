@@ -5,8 +5,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default function MainPage({ navigation }) {
 
     const handleAP = () => {
-        console.log("AP Pressed")
-        navigation.navigate('Reservation');
+        navigation.navigate('APRoom');
+    }
+
+    const handleQZ = () => {
+        navigation.navigate('QZRoom');
     }
 
     const handleProfile = () => {
@@ -43,7 +46,7 @@ export default function MainPage({ navigation }) {
                 <TouchableOpacity style={styles.floorBtn} onPress={handleAP}>
                     <Text style={{ fontSize: 20, paddingLeft: 20, }}>A-P</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.floorBtn}>
+                <TouchableOpacity style={styles.floorBtn} onPress={handleQZ}>
                     <Text style={{ fontSize: 20, paddingLeft: 20, }}>Q-Z</Text>
                 </TouchableOpacity>
             </View>

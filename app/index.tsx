@@ -9,6 +9,9 @@ import CreateAccount from './CreateAccount';
 import Profile from './Profile';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Reservation from './Reservation';
+import UserSeat from './UserSeat';
+import APRoom from './APRoom';
+import QZRoom from './QZRoom';
 
 
 const Stack = createNativeStackNavigator();
@@ -64,6 +67,39 @@ export default function index() {
                     headerTransparent: true,
                     headerTintColor: '#FFFFFF',
                     headerTitle: '',
+                }} />
+            <Stack.Screen
+                name='UserSeat'
+                component={UserSeat}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: '',
+                }} />
+
+            <Stack.Screen
+                name='APRoom'
+                component={APRoom}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: 'A-P Room',
+                    headerTitleAlign: 'center',
+                }} />
+            <Stack.Screen
+                name='QZRoom'
+                component={QZRoom}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: 'Q-Z Room',
+                    headerTitleAlign: 'center',
                 }} />
         </Stack.Navigator>
     )

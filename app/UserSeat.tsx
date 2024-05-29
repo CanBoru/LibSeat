@@ -1,6 +1,7 @@
 import React from 'react'
 import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Timer from '../components/Timer';
 
 export default function UserSeat({ navigation }) {
 
@@ -27,7 +28,7 @@ export default function UserSeat({ navigation }) {
             </View>
             <View style={styles.ProfilePageContainer}>
                 {/* seat a number*/}
-                <View style={{ flexDirection: 'row', marginTop: 20, marginBottom: 60 }}>
+                <View style={{ flexDirection: 'row', marginTop: 20, marginBottom: 30 }}>
                     <Text style={{
                         width: 200,
                         fontSize: 40,
@@ -59,7 +60,7 @@ export default function UserSeat({ navigation }) {
                 </View>
 
 
-                {/*SAYAÇ*/}
+                {/*Timer*/}
                 <View style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -68,17 +69,23 @@ export default function UserSeat({ navigation }) {
                     marginBottom: 20,
 
                 }}>
+                    <View style={{ flexDirection: 'row', marginBottom: 2 }}>
+                        <Text style={{ marginRight: 20 }}>Hours:</Text>
+                        <Text style={{ marginRight: 18 }}>Minutes:</Text>
+                        <Text style={{}}>Seconds:</Text>
+                    </View>
+
                     <Text style={{
                         fontSize: 40,
                         fontWeight: "500",
                     }}>
-                        00:00:00
+                        <Timer initialSeconds={0} />
                     </Text>
                 </View>
                 {/* Leave button*/}
 
                 <View >
-                    <TouchableOpacity style={styles.seatBtn} onPress={() => Alert.alert('Are you sure?', 'Do you want to leave this seat?', [
+                    <TouchableOpacity style={styles.seatBtn} onPress={() => Alert.alert('Are you sure?', 'Do you want to leave this seat?\nYour timer will be reset!', [
                         {
                             text: "Yes",
                             onPress: () => navigation.navigate('MainPage')
@@ -158,7 +165,7 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40,
+        marginTop: 20,
     },
     signUpText: {
         color: '#fff',

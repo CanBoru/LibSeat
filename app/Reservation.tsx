@@ -75,7 +75,7 @@ export default function Reservation({ navigation }) {
                 {/* buttons*/}
 
                 <View style={{ flexDirection: 'row', marginTop: 40, marginBottom: 90, }}>
-                    <TouchableOpacity style={styles.seatBtn}>
+                    <TouchableOpacity style={styles.seatBtn} onPress={() => navigation.navigate('MainPage')}>
                         <Text style={{
                             color: '#B61938',
                             fontSize: 20,
@@ -85,7 +85,16 @@ export default function Reservation({ navigation }) {
                         <Icon name="remove" size={25} color="red" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.seatBtn}>
+                    <TouchableOpacity style={styles.seatBtn} onPress={() => Alert.alert('Are you sure?', '', [
+                        {
+                            text: "Yes",
+                            onPress: () => navigation.navigate('UserSeat')
+                        },
+                        {
+                            text: "No",
+                            onPress: () => console.log("No")
+                        }
+                    ])}>
                         <Text style={{
                             color: '#B61938',
                             fontSize: 20,

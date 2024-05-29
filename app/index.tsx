@@ -12,6 +12,7 @@ import Reservation from './Reservation';
 import UserSeat from './UserSeat';
 import APRoom from './APRoom';
 import QZRoom from './QZRoom';
+import PhotoTaking from './PhotoTaking';
 
 
 const Stack = createNativeStackNavigator();
@@ -99,6 +100,17 @@ export default function index() {
                     headerTransparent: true,
                     headerTintColor: '#FFFFFF',
                     headerTitle: 'Q-Z Room',
+                    headerTitleAlign: 'center',
+                }} />
+            <Stack.Screen
+                name='PhotoTaking'
+                component={PhotoTaking}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: 'PhotoTaking',
                     headerTitleAlign: 'center',
                 }} />
         </Stack.Navigator>

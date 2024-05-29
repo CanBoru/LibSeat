@@ -9,6 +9,7 @@ import CreateAccount from './CreateAccount';
 import Profile from './Profile';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Reservation from './Reservation';
+import UserSeat from './UserSeat';
 
 
 const Stack = createNativeStackNavigator();
@@ -58,6 +59,16 @@ export default function index() {
             <Stack.Screen
                 name='Reservation'
                 component={Reservation}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: '',
+                }} />
+            <Stack.Screen
+                name='UserSeat'
+                component={UserSeat}
                 options={{
                     headerShown: true,
                     headerBackButtonMenuEnabled: true,

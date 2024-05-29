@@ -8,6 +8,7 @@ import MainPage from './MainPage';
 import CreateAccount from './CreateAccount';
 import Profile from './Profile';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Reservation from './Reservation';
 
 
 const Stack = createNativeStackNavigator();
@@ -47,6 +48,16 @@ export default function index() {
             <Stack.Screen
                 name='Profile'
                 component={Profile}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: '',
+                }} />
+            <Stack.Screen
+                name='Reservation'
+                component={Reservation}
                 options={{
                     headerShown: true,
                     headerBackButtonMenuEnabled: true,

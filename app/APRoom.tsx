@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground, Image, View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { ImageBackground, Image, View, StyleSheet, Text, TouchableOpacity, ScrollView, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function APRoom({ navigation }) {

@@ -2,20 +2,51 @@ import React, { useState } from 'react';
 import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function LoginPage({ navigation }) {
 
-    const [email, setEmail] = useState('');
+
+    const [mail, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Giriş işlemleri burada yapılacak
-        console.log('Email:', email);
-        console.log('Password:', password);
+        const credentials = { mail, password }; // E-posta ve şifre bilgilerini nesne olarak toplayın
+        const url = 'http://10.8.57.59:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
 
-        navigation.navigate('MainPage');
+        axios.post(url, credentials)
+            .then((response) => {
+                const result = response.data;
+                console.log(result);
+                const { status, loggedUser } = result;
+
+                if (status === 'success') {
+                    console.log('Logged User:', loggedUser);
+                    Alert.alert('Logged in successful!');
+                    AsyncStorage.setItem('token', loggedUser);
+                    AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+                    navigation.navigate('MainPage');
+                } else {
+                    console.log('Login Failed');
+                    Alert.alert('Login Failed');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                if (error.response && error.response.status === 401) {
+                    Alert.alert('Invalid email or password');
+                } else {
+                    Alert.alert('Network Error', 'An error occurred while connecting to the server.');
+                }
+            });
+
+        console.log('Email:', mail);
+        console.log('Password:', password);
     };
+
 
     const handleForgotPassword = () => {
         // Şifre unutma işlemleri burada yapılacak
@@ -56,7 +87,7 @@ export default function LoginPage({ navigation }) {
                             <TextInput
                                 style={styles.input}
                                 placeholder="example@std.iyte.edu.tr"
-                                value={email}
+                                value={mail}
                                 onChangeText={setEmail}
                                 keyboardType="email-address"
                                 autoCapitalize="none"

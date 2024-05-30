@@ -1,5 +1,6 @@
-import React from 'react'
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useEffect } from 'react'
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, BackHandler, Alert } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function MainPage({ navigation }) {
@@ -16,6 +17,30 @@ export default function MainPage({ navigation }) {
         navigation.navigate('Profile');
     }
 
+    const handleBackPress = () => {
+        Alert.alert('Exit App', 'Are you sure you want to exit?', [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            },
+            {
+                text: 'OK',
+                onPress: () => BackHandler.exitApp()
+            }
+        ]);
+        return true;
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+            };
+        }),
+    );
 
     return (
         <ImageBackground

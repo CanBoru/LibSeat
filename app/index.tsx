@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator();
 
 export default function index() {
 
-    const { isLoggedIn, setIsLoggedIn } = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     async function getData() {
         const data = await AsyncStorage.getItem('isLoggedIn');
@@ -42,7 +42,7 @@ export default function index() {
 
     return (
         <Stack.Navigator
-            initialRouteName='Login'
+            initialRouteName={isLoggedIn ? 'MainPage' : 'Login'}
         >
             <Stack.Screen
                 name="Login"

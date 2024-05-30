@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react'
-import { ImageBackground, Text, View, StyleSheet, Image, TouchableOpacity, TextInput } from "react-native";
+import { ImageBackground, Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -9,8 +10,29 @@ export default function Profile({ navigation }) {
 
     const handleLogout = () => {
         console.log('logged out');
-        navigation.navigate('Login');
+
+        Alert.alert('Log Out !', 'Are you sure you want to log out?', [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            },
+            {
+                text: 'OK',
+                onPress: () => {
+                    AsyncStorage.removeItem('token').then(() => {
+                        AsyncStorage.removeItem('isLoggedIn').then(() => {
+                            navigation.navigate('Login');
+                        }).catch(error => console.log(error));
+
+                    }).catch(error => console.log(error));
+                }
+            }
+        ]);
+        // navigation.navigate('Login');
+
     }
+
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}

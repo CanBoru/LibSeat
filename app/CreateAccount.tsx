@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import CheckBox from '../components/CheckBox';
+import * as ImagePicker from 'expo-image-picker';
 
 
 export default function CreateAccount({ navigation }) { //navigation varsa handle et
+
     const [StudentID, setStudentID] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
-    const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
     const [isGreenSelected, setIsGreenSelected] = useState(false);
 
@@ -19,6 +19,8 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
         console.log('Email:', email);
 
     }
+
+
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}
@@ -37,103 +39,105 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
                 }}>Create  Your Account !</Text>
             </View>
 
-            <View style={styles.CreatePageContainer}>
-                <Image source={require("../assets/images/libseat_logo.png")} style={styles.reg_logo} />
-                <Text style={{
-                    fontSize: 12
-                }}>only for IZTECH</Text>
+            <ScrollView style={{ width: "100%", }}>
+                <View style={styles.CreatePageContainer}>
+                    <Image source={require("../assets/images/libseat_logo.png")} style={styles.reg_logo} />
+                    <Text style={{
+                        fontSize: 12
+                    }}>only for IZTECH</Text>
 
-                <View style={styles.largeContainer}>
-                    <View style={styles.inputs}>
-                        <Icon name="person" size={30} color="black" />
-                        <View style={styles.inputContainer}>
+                    <View style={styles.largeContainer}>
+                        <View style={styles.inputs}>
+                            <Icon name="person" size={30} color="black" />
+                            <View style={styles.inputContainer}>
 
-                            <TextInput
-                                style={styles.input}
-                                placeholder="StudentID"
-                                value={StudentID}
-                                onChangeText={setStudentID}
-                                keyboardType="email-address"
-                                autoCapitalize="none"
-                            />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="StudentID"
+                                    value={StudentID}
+                                    onChangeText={setStudentID}
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                />
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.inputs}>
-                        <Icon name="person" size={30} color="black" />
-                        <View style={styles.inputContainer}>
+                        <View style={styles.inputs}>
+                            <Icon name="person" size={30} color="black" />
+                            <View style={styles.inputContainer}>
 
-                            <TextInput
-                                style={styles.input}
-                                placeholder="example@std.iyte.edu.tr"
-                                value={email}
-                                onChangeText={setEmail}
-                                keyboardType="email-address"
-                                autoCapitalize="none"
-                            />
-                        </View>
-                    </View>
-
-                    <View style={styles.inputs}>
-                        <Icon name="lock-closed" size={30} color="black" />
-                        <View style={styles.inputContainer}>
-
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Password"
-                                value={password}
-                                onChangeText={setPassword}
-                                secureTextEntry={true}
-                            />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="example@std.iyte.edu.tr"
+                                    value={email}
+                                    onChangeText={setEmail}
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                />
+                            </View>
                         </View>
 
-                    </View>
-                    <View style={styles.inputs}>
-                        <Icon name="lock-closed" size={30} color="black" />
-                        <View style={styles.inputContainer}>
+                        <View style={styles.inputs}>
+                            <Icon name="lock-closed" size={30} color="black" />
+                            <View style={styles.inputContainer}>
 
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Confirm Password"
-                                value={confirmPassword}
-                                onChangeText={setConfirmPassword}
-                                secureTextEntry={true}
-                            />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Password"
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    secureTextEntry={true}
+                                />
+                            </View>
+
                         </View>
-                    </View>
-                    <View style={styles.AddPhoto}>
+                        <View style={styles.inputs}>
+                            <Icon name="lock-closed" size={30} color="black" />
+                            <View style={styles.inputContainer}>
 
-                        <Text style={{ paddingRight: 25 }}>Add Student ID Card</Text>
-                        <TouchableOpacity>
-                            <Icon name="camera" size={30} color="black" />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Confirm Password"
+                                    value={confirmPassword}
+                                    onChangeText={setConfirmPassword}
+                                    secureTextEntry={true}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.AddPhoto}>
+                            <Text style={{ paddingRight: 25 }}>Add Student ID Card</Text>
+                            <Image source={require("../assets/images/page_background_v1.png")} style={styles.image} />
+                            <TouchableOpacity onPress={() => navigation.navigate('PhotoTaking')}>
+                                <Icon name="camera" size={30} color="black" />
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.checkboxContainer}>
+                            <CheckBox
+                                text={""}
+                                isChecked={isGreenSelected}
+                                onPress={() => setIsGreenSelected(!isGreenSelected)}
+                                container={styles.checkBox}
+
+                            />
+                            <Text> Terms of Use and Privacy Policy</Text>
+
+                        </View>
+
+                        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+                            <ImageBackground
+                                source={require("../assets/images/btn_back.png")}
+                                style={styles.signUpBack}
+                                resizeMode="cover"
+                                imageStyle={styles.loginImageStyle}
+                            >
+                                <Text style={styles.signUpText}>SIGN UP</Text>
+                            </ImageBackground>
                         </TouchableOpacity>
-
                     </View>
 
-                    <View style={styles.checkboxContainer}>
-                        <CheckBox
-                            text={""}
-                            isChecked={isGreenSelected}
-                            onPress={() => setIsGreenSelected(!isGreenSelected)}
-                            container={styles.checkBox}
-
-                        />
-                        <Text> Terms of Use and Privacy Policy</Text>
-
-                    </View>
-
-                    <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-                        <ImageBackground
-                            source={require("../assets/images/btn_back.png")}
-                            style={styles.signUpBack}
-                            resizeMode="cover"
-                            imageStyle={styles.loginImageStyle}
-                        >
-                            <Text style={styles.signUpText}>SIGN UP</Text>
-                        </ImageBackground>
-                    </TouchableOpacity>
                 </View>
+            </ScrollView>
 
-            </View>
 
         </ImageBackground >
 
@@ -205,7 +209,7 @@ const styles = StyleSheet.create(
             paddingHorizontal: 5,
             paddingVertical: 5,
             borderRadius: 8,
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "space-around",
             alignItems: "center",
             marginLeft: 25,
@@ -226,6 +230,7 @@ const styles = StyleSheet.create(
             borderRadius: 12,
             width: 200,
             marginLeft: 33,
+            marginBottom: 25,
         },
         signUpText: {
             color: '#fff',
@@ -245,6 +250,10 @@ const styles = StyleSheet.create(
             borderRadius: 50,
             marginTop: 50,
             marginLeft: 20
+        },
+        image: {
+            width: 200,
+            height: 200,
         },
     }
 )

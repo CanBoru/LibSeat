@@ -22,7 +22,7 @@ export default function Profile({ navigation }) {
                 onPress: () => {
                     AsyncStorage.removeItem('token').then(() => {
                         AsyncStorage.removeItem('isLoggedIn').then(() => {
-                            navigation.navigate('Login');
+                            navigation.navigate('LoginPage');
                         }).catch(error => console.log(error));
 
                     }).catch(error => console.log(error));

@@ -122,7 +122,7 @@ export default function index() {
                     headerTitle: 'Q-Z Room',
                     headerTitleAlign: 'center',
                 }} />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name='PhotoTaking'
                 component={PhotoTaking}
                 options={{
@@ -133,7 +133,7 @@ export default function index() {
                     headerTitle: 'PhotoTaking',
                     headerTitleAlign: 'center',
                     fullScreenGestureEnabled: true,
-                }} />
+                }} /> */}
         </Stack.Navigator>
     )
 }

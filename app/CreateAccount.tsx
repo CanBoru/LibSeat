@@ -11,8 +11,38 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
+    const [image, setImage] = useState('');
     const [isGreenSelected, setIsGreenSelected] = useState(false);
+
+    const uploadImage = async () => {
+
+        try {
+            await ImagePicker.requestCameraPermissionsAsync();
+
+            let result = await ImagePicker.launchCameraAsync({
+                cameraType: ImagePicker.CameraType.back,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+
+            if (!result.canceled) {
+                //save image
+                await saveImage(result.assets[0].uri);
+            }
+        } catch (err) {
+            alert("Error uploading image: " + err.message);
+        }
+    }
+
+    const saveImage = async (image) => {
+        try {
+            //update displayed image
+            setImage(image);
+        } catch (err) {
+            throw err;
+        }
+    };
 
     const handleSignUp = () => {
         console.log('StudentID:', StudentID);
@@ -105,8 +135,8 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
                         </View>
                         <View style={styles.AddPhoto}>
                             <Text style={{ paddingRight: 25 }}>Add Student ID Card</Text>
-                            <Image source={require("../assets/images/page_background_v1.png")} style={styles.image} />
-                            <TouchableOpacity onPress={() => navigation.navigate('PhotoTaking')}>
+                            {image && <Image source={{ uri: image }} style={styles.image} />}
+                            <TouchableOpacity onPress={uploadImage}>
                                 <Icon name="camera" size={30} color="black" />
                             </TouchableOpacity>
                         </View>
@@ -253,7 +283,7 @@ const styles = StyleSheet.create(
         },
         image: {
             width: 200,
-            height: 200,
+            height: 150,
         },
     }
 )

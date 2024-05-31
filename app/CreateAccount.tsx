@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import CheckBox from '../components/CheckBox';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 
 export default function CreateAccount({ navigation }) { //navigation varsa handle et
 
     const [StudentID, setStudentID] = useState('');
-    const [email, setEmail] = useState('');
+    const [StudentName, setStudentName] = useState('');
+    const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [image, setImage] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [image, setImage] = useState(false);
+
+
+    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
     const [isGreenSelected, setIsGreenSelected] = useState(false);
+    const [isSavedImage, setIsSavedImage] = useState(null);
+
+
 
     const uploadImage = async () => {
 
@@ -37,8 +47,8 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
 
     const saveImage = async (image) => {
         try {
-            //update displayed image
             setImage(image);
+            setIsSavedImage(true);
         } catch (err) {
             throw err;
         }
@@ -46,7 +56,44 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
 
     const handleSignUp = () => {
         console.log('StudentID:', StudentID);
-        console.log('Email:', email);
+        console.log('Email:', mail);
+
+        const studentInfos = { mail, studentName: StudentName, studentNumber: StudentID, phoneNumber, password };
+        const url = 'http://10.8.57.59:3000/LibSeat/createStudent';
+        const urlImage = `http://10.8.57.59:3000/LibSeat/uploadPhoto`;
+
+
+        // const formData = new FormData();
+        // formData.append('file', {
+        //     uri: image.uri,
+        //     type: image.type,
+        //     name: mail,
+        // });
+        // console.log(formData);
+
+        const formData = {
+            mail: mail,
+            image: image,
+        }
+
+        if (isSavedImage === true) {
+            axios.post(url, studentInfos).
+                then(() => axios.post('http://10.8.57.59:3000/LibSeat/uploadPhoto', formData,).catch(error => {
+                    if (error.response && error.response.status === 400) {
+                        Alert.alert(error.response.message);
+                    }
+                }
+                )).
+                catch(error => {
+                    if (error.response && error.response.status === 400) {
+                        Alert.alert(error.response.message);
+                    }
+                })
+        }
+        else {
+            Alert.alert("Please upload your student ID card!");
+        }
+
 
     }
 
@@ -86,7 +133,7 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
                                     placeholder="StudentID"
                                     value={StudentID}
                                     onChangeText={setStudentID}
-                                    keyboardType="email-address"
+                                    keyboardType="numeric"
                                     autoCapitalize="none"
                                 />
                             </View>
@@ -97,10 +144,38 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
 
                                 <TextInput
                                     style={styles.input}
+                                    placeholder="Student Name"
+                                    value={StudentName}
+                                    onChangeText={setStudentName}
+                                    keyboardType="default"
+                                    autoCapitalize="none"
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.inputs}>
+                            <Icon name="mail" size={30} color="black" />
+                            <View style={styles.inputContainer}>
+
+                                <TextInput
+                                    style={styles.input}
                                     placeholder="example@std.iyte.edu.tr"
-                                    value={email}
-                                    onChangeText={setEmail}
+                                    value={mail}
+                                    onChangeText={setMail}
                                     keyboardType="email-address"
+                                    autoCapitalize="none"
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.inputs}>
+                            <Icon name="call" size={30} color="black" />
+                            <View style={styles.inputContainer}>
+
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="05XXYYYZZZZ"
+                                    value={phoneNumber}
+                                    onChangeText={setPhoneNumber}
+                                    keyboardType="phone-pad"
                                     autoCapitalize="none"
                                 />
                             </View>
@@ -115,8 +190,11 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
                                     placeholder="Password"
                                     value={password}
                                     onChangeText={setPassword}
-                                    secureTextEntry={true}
+                                    secureTextEntry={passwordVisible ? true : false}
                                 />
+                                <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setPasswordVisible(!passwordVisible)}>
+                                    <Icon name={passwordVisible ? "eye-off" : "eye"} size={18} color="black" />
+                                </TouchableOpacity>
                             </View>
 
                         </View>
@@ -129,8 +207,11 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
                                     placeholder="Confirm Password"
                                     value={confirmPassword}
                                     onChangeText={setConfirmPassword}
-                                    secureTextEntry={true}
+                                    secureTextEntry={confirmPasswordVisible ? true : false}
                                 />
+                                <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
+                                    <Icon name={confirmPasswordVisible ? "eye-off" : "eye"} size={18} color="black" />
+                                </TouchableOpacity>
                             </View>
                         </View>
                         <View style={styles.AddPhoto}>

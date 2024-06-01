@@ -42,7 +42,7 @@ export default function LoginPage() {
             .catch(error => {
                 console.log(error);
                 if (error.response && error.response.status === 401) {
-                    Alert.alert('Invalid email or password');
+                    Alert.alert(error.response.data.message);
                 } else {
                     Alert.alert('Network Error', 'An error occurred while connecting to the server.');
                 }

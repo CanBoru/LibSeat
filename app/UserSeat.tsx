@@ -9,6 +9,8 @@ export default function UserSeat({ route, navigation }) {
 
     console.log('userseat :', seatId, roomName);
 
+    // if isReserved 
+
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}

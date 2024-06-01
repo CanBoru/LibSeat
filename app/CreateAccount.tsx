@@ -14,7 +14,7 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [image, setImage] = useState(false);
+    const [image, setImage] = useState(null);
 
 
     const [passwordVisible, setPasswordVisible] = useState(true);
@@ -59,33 +59,30 @@ export default function CreateAccount({ navigation }) { //navigation varsa handl
         console.log('Email:', mail);
 
         const studentInfos = { mail, studentName: StudentName, studentNumber: StudentID, phoneNumber, password };
-        const url = 'http://10.8.57.59:3000/LibSeat/createStudent';
-        const urlImage = `http://10.8.57.59:3000/LibSeat/uploadPhoto`;
+        const url = 'http://192.168.1.46:3000/LibSeat/createStudent';
+        const urlImage = 'http://192.168.1.46:3000/LibSeat/uploadPhoto';
 
 
-        // const formData = new FormData();
-        // formData.append('file', {
-        //     uri: image.uri,
-        //     type: image.type,
-        //     name: mail,
-        // });
-        // console.log(formData);
+        const formData = new FormData();
 
-        const formData = {
-            mail: mail,
-            image: image,
-        }
+        formData.append('image', image);
+
+
+
 
         if (isSavedImage === true) {
             axios.post(url, studentInfos).
-                then(() => axios.post('http://10.8.57.59:3000/LibSeat/uploadPhoto', formData,).catch(error => {
+                then(() => axios.post('http://192.168.1.46:3000/LibSeat/uploadPhoto', formData
+                ).catch(error => {
                     if (error.response && error.response.status === 400) {
+                        console.log(error);
                         Alert.alert(error.response.message);
                     }
                 }
                 )).
                 catch(error => {
                     if (error.response && error.response.status === 400) {
+                        console.log(error);
                         Alert.alert(error.response.message);
                     }
                 })

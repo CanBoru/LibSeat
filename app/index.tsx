@@ -109,7 +109,6 @@ export default function index() {
                     headerTintColor: '#FFFFFF',
                     headerTitle: 'A-P Room',
                     headerTitleAlign: 'center',
-                    headerRight: () => <TouchableOpacity onPress={() => alert('Hello')}><Icon name='camera' size={30} color='#FFFFFF' style={{ marginRight: 10 }} /></TouchableOpacity>
                 }} />
             <Stack.Screen
                 name='QZRoom'

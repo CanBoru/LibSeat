@@ -15,7 +15,7 @@ export default function LoginPage({ navigation }) {
 
     const handleLogin = () => {
         const credentials = { mail, password }; // E-posta ve şifre bilgilerini nesne olarak toplayın
-        const url = 'http://10.8.57.59:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
+        const url = 'http://192.168.1.46:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
 
         axios.post(url, credentials)
             .then((response) => {

@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Timer from '../components/Timer';
 
-export default function UserSeat({ navigation }) {
+export default function UserSeat({ route, navigation }) {
+
+    const { seatId, roomName } = route.params;
+
+    console.log('userseat :', seatId, roomName);
 
     return (
         <ImageBackground
@@ -37,14 +41,14 @@ export default function UserSeat({ navigation }) {
                         this seat...</Text>
                     <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{
-                            marginHorizontal: 15,
-                            fontSize: 40,
+                            marginVertical: 8,
+                            fontSize: 30,
                             fontWeight: "400",
                             color: '#B61938',
                             textShadowColor: 'rgba(0, 0, 0, 0.3)',
                             textShadowOffset: { width: 0, height: 2 },
                             textShadowRadius: 6,
-                        }}>A-P</Text>
+                        }}>{roomName}</Text>
                         <View style={{ borderWidth: 1, borderColor: '#B61938', }}>
                             <Text style={{
                                 marginHorizontal: 15,
@@ -54,7 +58,7 @@ export default function UserSeat({ navigation }) {
                                 textShadowColor: 'rgba(0, 0, 0, 0.35)',
                                 textShadowOffset: { width: 0, height: 2 },
                                 textShadowRadius: 6,
-                            }}>4</Text>
+                            }}>{seatId}</Text>
                         </View>
                     </View>
                 </View>

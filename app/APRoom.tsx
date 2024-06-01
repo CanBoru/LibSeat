@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { ImageBackground, Image, View, StyleSheet, Text, TouchableOpacity, ScrollView, } from 'react-native';
+import { ImageBackground, Image, View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default function APRoom({ navigation }) {
     const seats = [
         { id: 1, reserved: false }, { id: 2, reserved: false }, { id: 3, reserved: false }, { id: 4, reserved: false }, { id: 5, reserved: false }, { id: 6, reserved: false },
         { id: 7, reserved: false }, { id: 8, reserved: false }, { id: 9, reserved: false }, { id: 10, reserved: false }, { id: 11, reserved: false }, { id: 12, reserved: false },
-        { id: 13, reserved: false }, { id: 14, reserved: false }, { id: 15, reserved: false }, { id: 16, reserved: false }, { id: 17, reserved: false }, { id: 18, reserved: false },
-        { id: 19, reserved: false }, { id: 20, reserved: false }, { id: 21, reserved: false }, { id: 22, reserved: false }, { id: 23, reserved: false }, { id: 24, reserved: false },
+        { id: 13, reserved: false }, { id: 14, reserved: true }, { id: 15, reserved: false }, { id: 16, reserved: true }, { id: 17, reserved: false }, { id: 18, reserved: false },
+        { id: 19, reserved: false }, { id: 20, reserved: false }, { id: 21, reserved: false }, { id: 22, reserved: false }, { id: 23, reserved: true }, { id: 24, reserved: false },
         { id: 25, reserved: false }, { id: 26, reserved: false }, { id: 27, reserved: false }, { id: 28, reserved: false }, { id: 29, reserved: false }, { id: 30, reserved: false },
         { id: 31, reserved: false }, { id: 32, reserved: false }, { id: 33, reserved: false }, { id: 34, reserved: false }, { id: 35, reserved: false }, { id: 36, reserved: false },
         { id: 37, reserved: false }, { id: 38, reserved: false }, { id: 39, reserved: false }, { id: 40, reserved: false }, { id: 41, reserved: false }, { id: 42, reserved: false },
@@ -25,23 +26,46 @@ export default function APRoom({ navigation }) {
     const [seatState, setSeatState] = useState(seats);
     const [reservedSeat, setReservedSeat] = useState<number | null>(null);
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [selectedSeatId, setSelectedSeatId] = useState<number | null>(null);
+
     const handleSeatPress = (seatId: number) => {
+
+        if (seats[seatId - 1].reserved === true) {
+            alert('This seat is already reserved.');
+            return;
+        }
+
         if (reservedSeat === seatId) {
-            alert('You have already reserved this seat.');
+            // alert('You have already reserved this seat.');
+            navigation.navigate('UserSeat');
             return;
         }
         if (reservedSeat !== null) {
             alert('You cannot reserve more than one seat.');
             return;
         }
-
-        setSeatState((prevSeats) =>
-            prevSeats.map((seat) =>
-                seat.id === seatId ? { ...seat, reserved: true } : seat
-            )
-        );
-        setReservedSeat(seatId);
+        setSelectedSeatId(seatId);
+        setShowAlert(true);
     }
+
+    const handleConfirm = () => {
+        if (selectedSeatId !== null) {
+            setSeatState((prevSeats) =>
+                prevSeats.map((seat) =>
+                    seat.id === selectedSeatId ? { ...seat, reserved: true } : seat
+                )
+            );
+            setReservedSeat(selectedSeatId);
+            setShowAlert(false);
+
+            navigation.navigate('UserSeat', { seatId: selectedSeatId, roomName: 'A-P Room' })
+        }
+    };
+
+    const handleCancel = () => {
+        setShowAlert(false);
+    };
 
     return (
         <ImageBackground
@@ -63,12 +87,14 @@ export default function APRoom({ navigation }) {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -393,7 +419,108 @@ export default function APRoom({ navigation }) {
                 </View>
 
             </ScrollView>
+            {selectedSeatId !== null && (
+                <AwesomeAlert
+                    show={showAlert}
+                    showCancelButton={true}
+                    cancelText={<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{
+                            color: '#B61938',
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            marginRight: 10
+                        }}>Cancel</Text>
+                        <Icon name="remove" size={25} color="red" />
+                    </View>}
+                    cancelButtonStyle={{
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginHorizontal: 10,
+                    }}
+                    onCancelPressed={() => {
+                        handleCancel()
+                    }}
 
+                    showConfirmButton={true}
+                    confirmText={<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{
+                            color: '#B61938',
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            marginRight: 10
+                        }}>Occupy</Text>
+                        <Icon name="check" size={25} color="green" />
+                    </View>}
+                    confirmButtonStyle={{
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginHorizontal: 10,
+                    }}
+                    onConfirmPressed={() => {
+                        handleConfirm()
+                    }}
+
+                    customView={
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{
+                                    fontSize: 30,
+                                    fontWeight: "400",
+                                }}>Seat</Text>
+                                <View style={{ marginLeft: 30, borderWidth: 1, borderColor: '#B61938', }}><Text style={{
+                                    marginHorizontal: 15,
+                                    fontSize: 30,
+                                    fontWeight: "400",
+                                    color: '#B61938',
+                                    textShadowColor: 'rgba(0, 0, 0, 0.35)',
+                                    textShadowOffset: { width: 2, height: 2 },
+                                    textShadowRadius: 6,
+                                }}>{selectedSeatId}</Text></View>
+
+                            </View>
+
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{
+                                    fontSize: 30,
+                                    fontWeight: "400",
+                                }}>in</Text>
+                                <View style={{ marginLeft: 5, }}><Text style={{
+                                    marginHorizontal: 15,
+                                    fontSize: 30,
+                                    fontWeight: "400",
+                                    color: '#B61938',
+                                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                                    textShadowOffset: { width: 0, height: 2 },
+                                    textShadowRadius: 6,
+                                }}>A-P Room.</Text></View>
+
+                            </View>
+
+                            <View style={{
+                                width: 280,
+                                marginTop: 20,
+                                marginBottom: 20,
+                                alignItems: 'center',
+                            }}>
+                                <Text style={{
+                                    fontSize: 30,
+                                    fontWeight: "500",
+                                }}>
+                                    Your are about to occupy this seat...
+                                </Text>
+                            </View>
+                        </View>
+
+                    }
+                    closeOnHardwareBackPress={false}
+                />
+            )}
 
         </ImageBackground >
     )
@@ -453,5 +580,14 @@ const styles = StyleSheet.create({
     },
     twelveSeats: {
         marginVertical: 15,
-    }
+    },
+    userReservedSeat: {
+        backgroundColor: '#3E9728',
+    },
+    userReservedText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+
 })

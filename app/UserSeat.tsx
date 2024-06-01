@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 import Timer from '../components/Timer';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MainPage from './MainPage';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function UserSeat({ navigation }) {
+export default function UserSeat({ route, navigation }) {
+    const { seatId, roomName } = route.params;
+
+    console.log('userseat :', seatId, roomName);
+
+
+    const handleLeave = async () => {
+
+        const loggedUserStr = await AsyncStorage.getItem('token');
+        const loggedUser = JSON.parse(loggedUserStr);
+        const userEmail = loggedUser.mail;
+        axios.put('http://192.168.1.49:3000/LibSeat/deallocateSeat', {
+            roomName: roomName,
+            seatId: seatId,
+            studentMail: userEmail
+        }).then(response => {
+            console.log('Seat deallocated:', response.data);
+            navigation.navigate('MainPage')
+        })
+            .catch(error => {
+                console.error('Error deallocating seat:', error);
+            });
+
+    };
 
     return (
         <ImageBackground
@@ -37,14 +64,14 @@ export default function UserSeat({ navigation }) {
                         this seat...</Text>
                     <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{
-                            marginHorizontal: 15,
-                            fontSize: 40,
+                            marginVertical: 8,
+                            fontSize: 30,
                             fontWeight: "400",
                             color: '#B61938',
                             textShadowColor: 'rgba(0, 0, 0, 0.3)',
                             textShadowOffset: { width: 0, height: 2 },
                             textShadowRadius: 6,
-                        }}>A-P</Text>
+                        }}>{roomName}</Text>
                         <View style={{ borderWidth: 1, borderColor: '#B61938', }}>
                             <Text style={{
                                 marginHorizontal: 15,
@@ -54,7 +81,7 @@ export default function UserSeat({ navigation }) {
                                 textShadowColor: 'rgba(0, 0, 0, 0.35)',
                                 textShadowOffset: { width: 0, height: 2 },
                                 textShadowRadius: 6,
-                            }}>4</Text>
+                            }}>{seatId}</Text>
                         </View>
                     </View>
                 </View>
@@ -79,7 +106,7 @@ export default function UserSeat({ navigation }) {
                         fontSize: 40,
                         fontWeight: "500",
                     }}>
-                        <Timer initialSeconds={0} />
+                        <Timer seatId={seatId} roomName={roomName} />
                     </Text>
                 </View>
                 {/* Leave button*/}
@@ -88,7 +115,8 @@ export default function UserSeat({ navigation }) {
                     <TouchableOpacity style={styles.seatBtn} onPress={() => Alert.alert('Are you sure?', 'Do you want to leave this seat?\nYour timer will be reset!', [
                         {
                             text: "Yes",
-                            onPress: () => navigation.navigate('MainPage')
+                            onPress: () => { handleLeave() }
+                            // onPress: handleLeave() //fonksiyon yaz
                         },
                         {
                             text: "No",

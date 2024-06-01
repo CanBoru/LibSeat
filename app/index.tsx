@@ -1,29 +1,46 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ImageBackground, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import LoginPage from './LoginPage';
-import Deneme from './Deneme';
 import MainPage from './MainPage';
 import CreateAccount from './CreateAccount';
 import Profile from './Profile';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Reservation from './Reservation';
 import UserSeat from './UserSeat';
 import APRoom from './APRoom';
 import QZRoom from './QZRoom';
 import PhotoTaking from './PhotoTaking';
-
-
-const Stack = createNativeStackNavigator();
+import { SplashScreen } from 'expo-router';
 
 
 export default function index() {
 
+    const Stack = createNativeStackNavigator();
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    async function getData() {
+        const data = await AsyncStorage.getItem('isLoggedIn');
+        console.log('Data:', data, 'at index.tsx');
+        setIsLoggedIn(data);
+    }
+
+
+    useEffect(() => {
+        getData();
+        setTimeout(() => {
+            SplashScreen.hideAsync();
+        }, 900);
+    }, []);
+
 
     return (
         <Stack.Navigator
-            initialRouteName='Login'
+            initialRouteName={isLoggedIn ? 'MainPage' : 'Login'}
         >
             <Stack.Screen
                 name="Login"
@@ -102,7 +119,7 @@ export default function index() {
                     headerTitle: 'Q-Z Room',
                     headerTitleAlign: 'center',
                 }} />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name='PhotoTaking'
                 component={PhotoTaking}
                 options={{
@@ -112,7 +129,8 @@ export default function index() {
                     headerTintColor: '#FFFFFF',
                     headerTitle: 'PhotoTaking',
                     headerTitleAlign: 'center',
-                }} />
+                    fullScreenGestureEnabled: true,
+                }} /> */}
         </Stack.Navigator>
     )
 }

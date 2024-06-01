@@ -1,29 +1,64 @@
 import React, { useState } from 'react';
-import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput } from "react-native";
+import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput, } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import MainPage from './MainPage';
+import CreateAccount from './CreateAccount';
 
 
-export default function LoginPage({ navigation }) {
 
-    const [email, setEmail] = useState('');
+export default function LoginPage() {
+    const navigation = useNavigation();
+
+    const [mail, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(true);
 
     const handleLogin = () => {
-        // Giriş işlemleri burada yapılacak
-        console.log('Email:', email);
-        console.log('Password:', password);
+        const credentials = { mail, password }; // E-posta ve şifre bilgilerini nesne olarak toplayın
+        const url = 'http://192.168.1.49:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
 
-        navigation.navigate('MainPage');
+        axios.post(url, credentials)
+            .then((response) => {
+                const result = response.data;
+                console.log(result);
+                const { status, loggedUser } = result;
+
+                if (status === 'success') {
+                    console.log('Logged User:', loggedUser);
+                    Alert.alert('Logged in successful!');
+                    AsyncStorage.setItem('token', JSON.stringify(loggedUser));
+                    AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+                    navigation.navigate(MainPage);
+                } else {
+                    console.log('Login Failed');
+                    Alert.alert('Login Failed');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                if (error.response && error.response.status === 401) {
+                    Alert.alert(error.response.data.message);
+                } else {
+                    Alert.alert('Network Error', 'An error occurred while connecting to the server.');
+                }
+            });
+
+        console.log('Email:', mail);
+        console.log('Password:', password);
     };
+
 
     const handleForgotPassword = () => {
         // Şifre unutma işlemleri burada yapılacak
         console.log('Forgot Password Request');
     };
     const handlePress = () => {
-        navigation.navigate('CreateAccount');
-
+        navigation.navigate(CreateAccount);
 
     };
     const handleGradPress = () => {
@@ -42,11 +77,8 @@ export default function LoginPage({ navigation }) {
                 style={styles.container}
             >
                 <View style={styles.welcome}>
-                    <Text style={styles.text} >Hello</Text>
-                    <Text style={styles.text}>Sign in!</Text>
+                    <Text style={styles.text}>Welcome!</Text>
                 </View>
-
-
 
                 <View style={styles.signInContainer}>
                     <View style={styles.inputs}>
@@ -56,7 +88,7 @@ export default function LoginPage({ navigation }) {
                             <TextInput
                                 style={styles.input}
                                 placeholder="example@std.iyte.edu.tr"
-                                value={email}
+                                value={mail}
                                 onChangeText={setEmail}
                                 keyboardType="email-address"
                                 autoCapitalize="none"
@@ -73,8 +105,11 @@ export default function LoginPage({ navigation }) {
                                 placeholder="password"
                                 value={password}
                                 onChangeText={setPassword}
-                                secureTextEntry={true}
+                                secureTextEntry={passwordVisible}
                             />
+                            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setPasswordVisible(!passwordVisible)}>
+                                <Icon name={passwordVisible ? "eye-off" : "eye"} size={18} color="black" />
+                            </TouchableOpacity>
                         </View>
 
                     </View>
@@ -100,22 +135,19 @@ export default function LoginPage({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.signUpButton} onPress={handlePress}>
-                    <ImageBackground
-                        source={require("../assets/images/btn_back.png")}
-                        style={styles.signUpBack}
-                        resizeMode="cover"
-                        imageStyle={styles.loginImageStyle}
-                    >
-                        <Text style={styles.signUpText}>SIGN UP</Text>
-                    </ImageBackground>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>Don't you have an account? </Text>
+                    <View>
+                        <TouchableOpacity onPress={handlePress}>
+                            <Text style={styles.signUpText}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
 
                 <View style={styles.downLinks}>
                     <Text>Community</Text>
                     <Text>Privacy</Text>
                 </View>
-
 
             </View>
         </ImageBackground>
@@ -142,23 +174,26 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "flex-start",
+        alignItems: "center",
         padding: 20,
         borderRadius: 10,
     },
     welcome: {
+        marginTop: 60,
         marginBottom: 20,
         justifyContent: "center",
         alignItems: "flex-start",
     },
     text: {
-        color: "black",
-        fontSize: 40,
+        color: "white",
+        fontSize: 35,
         fontWeight: "bold",
         textAlign: "center",
         textShadowColor: 'rgba(0, 0, 0, 0.5)',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 6,
+        paddingTop: 20,
+        marginTop: 80,
     },
     logo: {
         marginTop: 25,
@@ -167,7 +202,7 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     signInContainer: {
-        marginBottom: 45,
+        marginBottom: 25,
         width: 260,
         height: 200,
         backgroundColor: "white",
@@ -202,6 +237,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 25,
+        marginTop: 10,
 
     },
     forgotPassword: {
@@ -221,22 +257,17 @@ const styles = StyleSheet.create({
     downLinks: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 15,
         width: 260,
         top: 55,
     },
     signUpButton: {
         borderRadius: 12,
         width: 200,
-        marginLeft: 33,
     },
     signUpText: {
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
+        color: 'white',
+        fontWeight: '500',
+        textDecorationLine: 'underline'
     },
     den1: {
         flex: 1,
@@ -248,17 +279,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 12,
     },
-
     loginImageStyle: {
         borderRadius: 12,
 
     },
 
-    signUpBack: {
-        width: '100%',
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 50,
-    },
 });

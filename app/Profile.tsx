@@ -1,16 +1,41 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react'
-import { ImageBackground, Text, View, StyleSheet, Image, TouchableOpacity, TextInput } from "react-native";
+import { ImageBackground, Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Alert } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import LoginPage from './LoginPage';
 
-
-
-
-export default function Profile({ navigation }) {
+export default function Profile() {
+    const navigation = useNavigation();
 
     const handleLogout = () => {
         console.log('logged out');
-        navigation.navigate('Login');
+
+        Alert.alert('Log Out!', 'Are you sure you want to log out?', [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            },
+            {
+                text: 'OK',
+                onPress: () => {
+
+                    AsyncStorage.removeItem('token').then(() => {
+                        AsyncStorage.removeItem('isLoggedIn').then(() => {
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'Login' }],
+                            });
+                        }).catch(error => console.log(error));
+
+                    }).catch(error => console.log(error));
+                }
+            }
+        ]);
+
     }
+
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}

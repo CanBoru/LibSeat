@@ -22,7 +22,7 @@ export default function CreateAccount() {
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
     const [isGreenSelected, setIsGreenSelected] = useState(false);
-    const [isSavedImage, setIsSavedImage] = useState(false); // Updated to false initially
+    //const [isSavedImage, setIsSavedImage] = useState(false); // Updated to false initially
 
     const uploadImage = async () => {
         try {
@@ -58,40 +58,40 @@ export default function CreateAccount() {
 
         const studentInfos = { mail, studentName: StudentName, studentNumber: StudentID, phoneNumber, password };
         const url = 'http://192.168.1.49:3000/LibSeat/createStudent';
-        const urlImage = `http://192.168.1.49:3000/LibSeat/uploadPhoto`;
+        //const urlImage = `http://192.168.1.49:3000/LibSeat/uploadPhoto`;
 
 
-        if (isSavedImage === true) {
-            try {
-                await axios.post(url, studentInfos);
-                const formData = new FormData();
-                formData.append('file', {
-                    uri: image,
-                    type: 'image/jpeg',
-                    name: `${mail}.jpg`,
+        // if (isSavedImage === true) {
+        try {
+            await axios.post(url, studentInfos);
+            // const formData = new FormData();
+            // formData.append('file', {
+            //     uri: image,
+            //     type: 'image/jpeg',
+            //     name: `${mail}.jpg`,
 
-                });
-                formData.append('mail', mail);
-                console.log(formData);
-                await axios.post(urlImage, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+            // });
+            // formData.append('mail', mail);
+            // console.log(formData);
+            // await axios.post(urlImage, formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            // });
 
-                Alert.alert("Register request is successfully sent!");
-                navigation.goBack(); // Navigate to the login page after successful sign-up
+            Alert.alert("Register request is successfully sent!");
+            navigation.goBack(); // Navigate to the login page after successful sign-up
 
-            } catch (error) {
-                if (error.response && error.response.status === 400) {
-                    Alert.alert(error.response.data.message);
-                } else {
-                    Alert.alert("An error occurred. Please try again.");
-                }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                Alert.alert(error.response.data.message);
+            } else {
+                Alert.alert("An error occurred. Please try again.");
             }
-        } else {
-            Alert.alert("Please upload your student ID card!");
         }
+        // } else {
+        //     Alert.alert("Please upload your student ID card!");
+        // }
     };
 
     return (
@@ -198,13 +198,13 @@ export default function CreateAccount() {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={styles.AddPhoto}>
+                        {/* <View style={styles.AddPhoto}>
                             <Text style={{ paddingRight: 25 }}>Add Student ID Card</Text>
                             {image && <Image source={{ uri: image }} style={styles.image} />}
                             <TouchableOpacity onPress={uploadImage}>
                                 <Icon name="camera" size={30} color="black" />
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                         <View style={styles.checkboxContainer}>
                             <CheckBox
                                 text={""}

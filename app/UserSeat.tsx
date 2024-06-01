@@ -4,13 +4,28 @@ import { useNavigation } from '@react-navigation/native';
 import Timer from '../components/Timer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MainPage from './MainPage';
+import axios from 'axios';
 
 export default function UserSeat({ route, navigation }) {
     const { seatId, roomName } = route.params;
 
     console.log('userseat :', seatId, roomName);
 
-    // if isReserved 
+
+    const handleLeave = async () => {
+
+        axios.put('http://192.168.1.46:3000/LibSeat/deallocateSeat', {
+            roomName: roomName,
+            seatId: seatId
+        }).then(response => {
+            console.log('Seat deallocated:', response.data);
+            navigation.navigate('MainPage')
+        })
+            .catch(error => {
+                console.error('Error deallocating seat:', error);
+            });
+
+    };
 
     return (
         <ImageBackground
@@ -86,7 +101,7 @@ export default function UserSeat({ route, navigation }) {
                         fontSize: 40,
                         fontWeight: "500",
                     }}>
-                        <Timer initialSeconds={0} />
+                        <Timer seatId={seatId} roomName={roomName} />
                     </Text>
                 </View>
                 {/* Leave button*/}
@@ -95,7 +110,8 @@ export default function UserSeat({ route, navigation }) {
                     <TouchableOpacity style={styles.seatBtn} onPress={() => Alert.alert('Are you sure?', 'Do you want to leave this seat?\nYour timer will be reset!', [
                         {
                             text: "Yes",
-                            onPress: () => navigation.navigate('MainPage')
+                            onPress: () => { handleLeave() }
+                            // onPress: handleLeave() //fonksiyon yaz
                         },
                         {
                             text: "No",

@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import UserSeat from './UserSeat';
 
+
 export default function APRoom() {
     const navigation = useNavigation();
 
@@ -40,7 +41,28 @@ export default function APRoom() {
     const [refresh, setRefresh] = useState(false);
 
 
+
+
     useEffect(() => {
+        // const createSeats = async () => {
+        //     const url = 'http://192.168.1.46:3000/LibSeat/createSeat';
+        //     const roomName = 'A-P Room'; // Replace with your actual room name
+
+        //     for (let seatId = 1; seatId <= 92; seatId++) {
+        //         try {
+        //             const response = await axios.post(url, {
+        //                 seatId,
+        //                 roomName,
+        //             });
+        //             console.log(`Seat ${seatId} created successfully`, response.data);
+        //         } catch (error) {
+        //             console.error(`Error creating seat ${seatId}`, error);
+        //         }
+        //     }
+        // };
+
+        // // Call the function to create the seats
+        // createSeats();
         const fetchSeats = async () => {
             axios.post('http://192.168.1.46:3000/LibSeat/getSeats', { roomName: 'A-P Room' })
                 .then(response => {
@@ -112,24 +134,40 @@ export default function APRoom() {
         else if (reservedSeat !== null && reservedSeat !== seatId) {
             alert('You cannot reserve more than one seat.');
             return;
+        } else {
+            setShowAlert(true);
         }
         setSelectedSeatId(seatId);
-        setShowAlert(true);
+
 
 
     }
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (selectedSeatId !== null) {
-            // setSeats((prevSeats) =>
-            //     prevSeats.map((seat) =>
-            //         seat.id === selectedSeatId ? { ...seat, reserved: true } : seat
-            //     )
-            // );
+
+            const loggedUserStr = await AsyncStorage.getItem('token');
+            const loggedUser = JSON.parse(loggedUserStr);
+            const userEmail = loggedUser.mail;
+            console.log('occupy Email:', userEmail);
+
+            axios.put('http://192.168.1.46:3000/LibSeat/allocateSeat', {
+                mail: userEmail,
+                roomName: 'A-P Room',
+                seatId: selectedSeatId
+            })
+                .then(response => {
+                    console.log('Seat allocated:', response.data);
+                    navigation.navigate('UserSeat', { seatId: selectedSeatId, roomName: 'A-P Room' })
+                })
+                .catch(error => {
+                    console.error('Error allocating seat:', error);
+                });
+
             setReservedSeat(selectedSeatId);
             setShowAlert(false);
 
-            navigation.navigate('UserSeat', { seatId: selectedSeatId, roomName: 'A-P Room' })
+
         }
     };
 
@@ -186,12 +224,14 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -207,13 +247,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -225,13 +267,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -247,13 +291,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -265,13 +311,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -287,13 +335,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -305,13 +355,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -327,13 +379,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 15 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -346,13 +400,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 15 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -368,13 +424,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -386,13 +444,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -408,13 +468,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -426,13 +488,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -448,13 +512,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>
@@ -466,13 +532,15 @@ export default function APRoom() {
                                 key={seat.id}
                                 style={[
                                     styles.seat,
-                                    seat.reserved ? styles.reservedSeat : styles.availableSeat,
+                                    seat.id === reservedSeat ? styles.userReservedSeat :
+                                        seat.reserved ? styles.reservedSeat : styles.availableSeat,
                                     (index === 2) && { marginRight: 50 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
                                 <Text style={[
-                                    seat.reserved ? styles.reservedText : styles.seatText]}>
+                                    seat.id === reservedSeat ? styles.userReservedText :
+                                        seat.reserved ? styles.reservedText : styles.seatText]}>
                                     {seat.id}
                                 </Text>
                             </TouchableOpacity>

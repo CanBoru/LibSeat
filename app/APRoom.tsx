@@ -45,7 +45,7 @@ export default function APRoom() {
 
     useEffect(() => {
         // const createSeats = async () => {
-        //     const url = 'http://192.168.1.46:3000/LibSeat/createSeat';
+        //     const url = 'http://192.168.1.49:3000/LibSeat/createSeat';
         //     const roomName = 'A-P Room'; // Replace with your actual room name
 
         //     for (let seatId = 1; seatId <= 92; seatId++) {
@@ -63,8 +63,9 @@ export default function APRoom() {
 
         // // Call the function to create the seats
         // createSeats();
+
         const fetchSeats = async () => {
-            axios.post('http://192.168.1.46:3000/LibSeat/getSeats', { roomName: 'A-P Room' })
+            axios.post('http://192.168.1.49:3000/LibSeat/getSeats', { roomName: 'A-P Room' })
                 .then(response => {
                     const data = response.data;
                     const updatedSeats = seats.map(seat => {
@@ -96,7 +97,7 @@ export default function APRoom() {
                 const userEmail = loggedUser.mail;
                 console.log('User Email:', userEmail);
 
-                const userResponse = await axios.post('http://192.168.1.46:3000/LibSeat/getStudent', {
+                const userResponse = await axios.post('http://192.168.1.49:3000/LibSeat/getStudent', {
                     mail: userEmail,
 
                 });
@@ -117,6 +118,22 @@ export default function APRoom() {
     }, [refresh]);
 
 
+    const getSeat = async (seatId, roomName) => {
+        try {
+            const response = await axios.post(`http://192.168.1.49:3000/LibSeat/getSeat`, { seatId: seatId, roomName: roomName });
+
+            if (response.data.seatStatus === 'Allocated') {
+                alert("This seat already allocated! Please refresh the page.")
+            } else {
+                setShowAlert(true);
+            }
+
+        } catch (error) {
+            console.error('Error fetching allocation time:', error);
+        }
+    };
+
+
 
     const handleSeatPress = (seatId: number) => {
         console.log("herhangi boş bir yere bastın:", reservedSeat);
@@ -135,7 +152,7 @@ export default function APRoom() {
             alert('You cannot reserve more than one seat.');
             return;
         } else {
-            setShowAlert(true);
+            getSeat(seatId, 'A-P Room');
         }
         setSelectedSeatId(seatId);
 
@@ -151,7 +168,7 @@ export default function APRoom() {
             const userEmail = loggedUser.mail;
             console.log('occupy Email:', userEmail);
 
-            axios.put('http://192.168.1.46:3000/LibSeat/allocateSeat', {
+            axios.put('http://192.168.1.49:3000/LibSeat/allocateSeat', {
                 mail: userEmail,
                 roomName: 'A-P Room',
                 seatId: selectedSeatId

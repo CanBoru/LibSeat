@@ -5,6 +5,7 @@ import Timer from '../components/Timer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MainPage from './MainPage';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function UserSeat({ route, navigation }) {
     const { seatId, roomName } = route.params;
@@ -14,9 +15,13 @@ export default function UserSeat({ route, navigation }) {
 
     const handleLeave = async () => {
 
-        axios.put('http://192.168.1.46:3000/LibSeat/deallocateSeat', {
+        const loggedUserStr = await AsyncStorage.getItem('token');
+        const loggedUser = JSON.parse(loggedUserStr);
+        const userEmail = loggedUser.mail;
+        axios.put('http://192.168.1.49:3000/LibSeat/deallocateSeat', {
             roomName: roomName,
-            seatId: seatId
+            seatId: seatId,
+            studentMail: userEmail
         }).then(response => {
             console.log('Seat deallocated:', response.data);
             navigation.navigate('MainPage')

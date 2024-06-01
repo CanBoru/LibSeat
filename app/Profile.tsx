@@ -25,7 +25,7 @@ export default function Profile() {
                         AsyncStorage.removeItem('isLoggedIn').then(() => {
                             navigation.reset({
                                 index: 0,
-                                routes: [{ name: 'LoginPage' }],
+                                routes: [{ name: 'Login' }],
                             });
                         }).catch(error => console.log(error));
 

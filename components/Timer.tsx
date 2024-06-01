@@ -14,7 +14,7 @@ const Timer: React.FC<TimerProps> = ({ seatId, roomName }) => {
         // Fetch the allocation time from the backend
         const fetchAllocationTime = async () => {
             try {
-                const response = await axios.post(`http://192.168.1.46:3000/LibSeat/getSeat`, { seatId: seatId, roomName: roomName });
+                const response = await axios.post(`http://192.168.1.49:3000/LibSeat/getSeat`, { seatId: seatId, roomName: roomName });
                 const allocatedAt = new Date(response.data.allocationTime);
                 const now = new Date();
                 const initialSeconds = Math.floor((now.getTime() - allocatedAt.getTime()) / 1000);

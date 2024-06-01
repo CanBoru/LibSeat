@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, Image, View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import UserSeat from './UserSeat';
 
-export default function APRoom({ navigation }) {
+export default function APRoom() {
+    const navigation = useNavigation();
 
     const [seats, setSeats] = useState([
         { id: 1, reserved: true }, { id: 2, reserved: true }, { id: 3, reserved: true }, { id: 4, reserved: true }, { id: 5, reserved: true },
@@ -28,56 +33,99 @@ export default function APRoom({ navigation }) {
         { id: 91, reserved: true }, { id: 92, reserved: true }
     ]);
 
-    useEffect(() => {
-        axios.post('http://192.168.1.46:3000/LibSeat/getSeats', { roomName: 'A-P Room' })
-            .then(response => {
-                const data = response.data;
-                const updatedSeats = seats.map(seat => {
-                    const seatData = data[seat.id];
-                    return {
-                        ...seat,
-                        reserved: seatData ? seatData.seatStatus !== 'Empty' : false,
-                    };
-                });
-                setSeats(updatedSeats);
-            })
-            .catch(error => {
-                console.error('Error fetching seats:', error);
-            });
-    }, []);
-
     const [reservedSeat, setReservedSeat] = useState<number | null>(null);
 
     const [showAlert, setShowAlert] = useState(false);
     const [selectedSeatId, setSelectedSeatId] = useState<number | null>(null);
+    const [refresh, setRefresh] = useState(false);
+
+
+    useEffect(() => {
+        const fetchSeats = async () => {
+            axios.post('http://192.168.1.46:3000/LibSeat/getSeats', { roomName: 'A-P Room' })
+                .then(response => {
+                    const data = response.data;
+                    const updatedSeats = seats.map(seat => {
+                        const seatData = data[seat.id];
+                        return {
+                            ...seat,
+                            reserved: seatData ? seatData.seatStatus !== 'Empty' : false,
+                        };
+                    });
+                    setSeats(updatedSeats);
+                })
+                .catch(error => {
+                    console.error('Error fetching seats:', error);
+                });
+        };
+
+        const fechSelectedSeat = async () => {
+            try {
+
+                const loggedUserStr = await AsyncStorage.getItem('token');
+                console.log(loggedUserStr);
+
+                if (!loggedUserStr) {
+                    console.error('No logged user found');
+                    return;
+                }
+
+                const loggedUser = JSON.parse(loggedUserStr);
+                const userEmail = loggedUser.mail;
+                console.log('User Email:', userEmail);
+
+                const userResponse = await axios.post('http://192.168.1.46:3000/LibSeat/getStudent', {
+                    mail: userEmail,
+
+                });
+
+                const userData = userResponse.data.seatId;
+
+                if (userData) {
+                    setReservedSeat(userData);
+                    console.log("birinci", reservedSeat);
+                }
+            } catch (error) {
+                console.error('Error fetching user seat:', error);
+            }
+        }
+        fetchSeats();
+        fechSelectedSeat();
+
+    }, [refresh]);
+
+
 
     const handleSeatPress = (seatId: number) => {
+        console.log("herhangi boş bir yere bastın:", reservedSeat);
+        console.log("baastığın tuş", seatId);
+        if (reservedSeat === seatId) {
+            // alert('You have already reserved this seat.');
+            navigation.navigate('UserSeat', { seatId: seatId, roomName: 'A-P Room' });
+        }
 
-        if (seats[seatId - 1].reserved === true) {
+        else if (seats[seatId - 1].reserved === true) {
             alert('This seat is already reserved.');
             return;
         }
 
-        if (reservedSeat === seatId) {
-            // alert('You have already reserved this seat.');
-            navigation.navigate('UserSeat', { seatId: seatId, roomName: 'A-P Room' });
-            return;
-        }
-        if (reservedSeat !== null) {
+        else if (reservedSeat !== null && reservedSeat !== seatId) {
             alert('You cannot reserve more than one seat.');
             return;
         }
         setSelectedSeatId(seatId);
         setShowAlert(true);
+
+
     }
 
     const handleConfirm = () => {
         if (selectedSeatId !== null) {
-            setSeats((prevSeats) =>
-                prevSeats.map((seat) =>
-                    seat.id === selectedSeatId ? { ...seat, reserved: true } : seat
-                )
-            );
+            // setSeats((prevSeats) =>
+            //     prevSeats.map((seat) =>
+            //         seat.id === selectedSeatId ? { ...seat, reserved: true } : seat
+            //     )
+            // );
             setReservedSeat(selectedSeatId);
             setShowAlert(false);
 
@@ -89,18 +137,28 @@ export default function APRoom({ navigation }) {
         setShowAlert(false);
     };
 
+
     return (
         <ImageBackground
             source={require("../assets/images/page_background_v1.png")}
             style={styles.background}>
 
 
+            {/*PROFILE ICON*/}
             <View style={styles.profile_icon} >
                 <Icon name="user-circle-o" size={35} color="white" />
             </View>
 
             {/*SEATS*/}
             <ScrollView style={styles.ProfilePageContainer} >
+
+                {/* refresh page button*/}
+                <View style={{ position: 'absolute', top: 10, right: 15 }}>
+                    <TouchableOpacity onPress={() => setRefresh(!refresh)} >
+                        <Icon2 name="refresh-outline" size={35} color="black" />
+                    </TouchableOpacity>
+                </View>
+
                 {/*********************************************** */}
                 <View style={styles.twelveSeats}>
                     <View style={styles.row}>
@@ -441,108 +499,110 @@ export default function APRoom({ navigation }) {
                 </View>
 
             </ScrollView>
-            {selectedSeatId !== null && (
-                <AwesomeAlert
-                    show={showAlert}
-                    showCancelButton={true}
-                    cancelText={<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{
-                            color: '#B61938',
-                            fontSize: 20,
-                            fontWeight: 'bold',
-                            marginRight: 10
-                        }}>Cancel</Text>
-                        <Icon name="remove" size={25} color="red" />
-                    </View>}
-                    cancelButtonStyle={{
-                        backgroundColor: 'transparent',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginHorizontal: 10,
-                    }}
-                    onCancelPressed={() => {
-                        handleCancel()
-                    }}
+            {
+                selectedSeatId !== null && (
+                    <AwesomeAlert
+                        show={showAlert}
+                        showCancelButton={true}
+                        cancelText={<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                                color: '#B61938',
+                                fontSize: 20,
+                                fontWeight: 'bold',
+                                marginRight: 10
+                            }}>Cancel</Text>
+                            <Icon name="remove" size={25} color="red" />
+                        </View>}
+                        cancelButtonStyle={{
+                            backgroundColor: 'transparent',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginHorizontal: 10,
+                        }}
+                        onCancelPressed={() => {
+                            handleCancel()
+                        }}
 
-                    showConfirmButton={true}
-                    confirmText={<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{
-                            color: '#B61938',
-                            fontSize: 20,
-                            fontWeight: 'bold',
-                            marginRight: 10
-                        }}>Occupy</Text>
-                        <Icon name="check" size={25} color="green" />
-                    </View>}
-                    confirmButtonStyle={{
-                        backgroundColor: 'transparent',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginHorizontal: 10,
-                    }}
-                    onConfirmPressed={() => {
-                        handleConfirm()
-                    }}
+                        showConfirmButton={true}
+                        confirmText={<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                                color: '#B61938',
+                                fontSize: 20,
+                                fontWeight: 'bold',
+                                marginRight: 10
+                            }}>Occupy</Text>
+                            <Icon name="check" size={25} color="green" />
+                        </View>}
+                        confirmButtonStyle={{
+                            backgroundColor: 'transparent',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginHorizontal: 10,
+                        }}
+                        onConfirmPressed={() => {
+                            handleConfirm()
+                        }}
 
-                    customView={
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{
-                                    fontSize: 30,
-                                    fontWeight: "400",
-                                }}>Seat</Text>
-                                <View style={{ marginLeft: 30, borderWidth: 1, borderColor: '#B61938', }}><Text style={{
-                                    marginHorizontal: 15,
-                                    fontSize: 30,
-                                    fontWeight: "400",
-                                    color: '#B61938',
-                                    textShadowColor: 'rgba(0, 0, 0, 0.35)',
-                                    textShadowOffset: { width: 2, height: 2 },
-                                    textShadowRadius: 6,
-                                }}>{selectedSeatId}</Text></View>
+                        customView={
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{
+                                        fontSize: 30,
+                                        fontWeight: "400",
+                                    }}>Seat</Text>
+                                    <View style={{ marginLeft: 30, borderWidth: 1, borderColor: '#B61938', }}><Text style={{
+                                        marginHorizontal: 15,
+                                        fontSize: 30,
+                                        fontWeight: "400",
+                                        color: '#B61938',
+                                        textShadowColor: 'rgba(0, 0, 0, 0.35)',
+                                        textShadowOffset: { width: 2, height: 2 },
+                                        textShadowRadius: 6,
+                                    }}>{selectedSeatId}</Text></View>
 
-                            </View>
+                                </View>
 
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{
-                                    fontSize: 30,
-                                    fontWeight: "400",
-                                }}>in</Text>
-                                <View style={{ marginLeft: 5, }}><Text style={{
-                                    marginHorizontal: 15,
-                                    fontSize: 30,
-                                    fontWeight: "400",
-                                    color: '#B61938',
-                                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-                                    textShadowOffset: { width: 0, height: 2 },
-                                    textShadowRadius: 6,
-                                }}>A-P Room.</Text></View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{
+                                        fontSize: 30,
+                                        fontWeight: "400",
+                                    }}>in</Text>
+                                    <View style={{ marginLeft: 5, }}><Text style={{
+                                        marginHorizontal: 15,
+                                        fontSize: 30,
+                                        fontWeight: "400",
+                                        color: '#B61938',
+                                        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                                        textShadowOffset: { width: 0, height: 2 },
+                                        textShadowRadius: 6,
+                                    }}>A-P Room.</Text></View>
 
-                            </View>
+                                </View>
 
-                            <View style={{
-                                width: 280,
-                                marginTop: 20,
-                                marginBottom: 20,
-                                alignItems: 'center',
-                            }}>
-                                <Text style={{
-                                    fontSize: 30,
-                                    fontWeight: "500",
+                                <View style={{
+                                    width: 280,
+                                    marginTop: 20,
+                                    marginBottom: 20,
+                                    alignItems: 'center',
                                 }}>
-                                    Your are about to occupy this seat...
-                                </Text>
+                                    <Text style={{
+                                        fontSize: 30,
+                                        fontWeight: "500",
+                                    }}>
+                                        Your are about to occupy this seat...
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
 
-                    }
-                    closeOnHardwareBackPress={false}
-                />
-            )}
+                        }
+                        closeOnHardwareBackPress={false}
+                    />
+                )
+            }
 
         </ImageBackground >
     )

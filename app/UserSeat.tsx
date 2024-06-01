@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { ImageBackground, Text, View, StyleSheet, Image, Alert, Linking, TouchableOpacity, TextInput } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 import Timer from '../components/Timer';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MainPage from './MainPage';
 
 export default function UserSeat({ route, navigation }) {
-
     const { seatId, roomName } = route.params;
 
     console.log('userseat :', seatId, roomName);

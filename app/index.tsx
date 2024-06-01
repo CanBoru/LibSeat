@@ -17,11 +17,9 @@ import PhotoTaking from './PhotoTaking';
 import { SplashScreen } from 'expo-router';
 
 
-
-const Stack = createNativeStackNavigator();
-
-
 export default function index() {
+
+    const Stack = createNativeStackNavigator();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 

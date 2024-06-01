@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react'
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, BackHandler, Alert } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import APRoom from './APRoom';
+import QZRoom from './QZRoom';
+import Profile from './Profile';
 
-export default function MainPage({ navigation }) {
+export default function MainPage() {
+    const navigation = useNavigation();
 
     const handleAP = () => {
-        navigation.navigate('APRoom');
+        navigation.navigate(APRoom);
     }
 
     const handleQZ = () => {
-        navigation.navigate('QZRoom');
+        navigation.navigate(QZRoom);
     }
 
     const handleProfile = () => {
-        navigation.navigate('Profile');
+        navigation.navigate(Profile);
     }
 
     const handleBackPress = () => {
@@ -56,7 +60,7 @@ export default function MainPage({ navigation }) {
                     marginLeft: 10,
                 }}>Choose a Study Room</Text>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                <TouchableOpacity onPress={() => navigation.navigate(Profile)}>
                     <View style={styles.dummyProfile}>
                         <Icon name="user-circle-o" size={45} color="white" />
                     </View>

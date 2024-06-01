@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CheckBox from '../components/CheckBox';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
-export default function CreateAccount({ navigation }) {
+export default function CreateAccount() {
+    const navigation = useNavigation();
 
     const [StudentID, setStudentID] = useState('');
     const [StudentName, setStudentName] = useState('');
@@ -56,6 +60,7 @@ export default function CreateAccount({ navigation }) {
         const url = 'http://192.168.1.46:3000/LibSeat/createStudent';
         const urlImage = `http://192.168.1.46:3000/LibSeat/uploadPhoto`;
 
+
         if (isSavedImage === true) {
             try {
                 await axios.post(url, studentInfos);
@@ -74,8 +79,8 @@ export default function CreateAccount({ navigation }) {
                     },
                 });
 
-                Alert.alert("Account created successfully!");
-                navigation.navigate('Login'); // Navigate to the login page after successful sign-up
+                Alert.alert("Register request is successfully sent!");
+                navigation.goBack(); // Navigate to the login page after successful sign-up
 
             } catch (error) {
                 if (error.response && error.response.status === 400) {

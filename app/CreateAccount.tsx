@@ -60,7 +60,15 @@ export default function CreateAccount() {
         const url = 'http://192.168.1.49:3000/LibSeat/createStudent';
         //const urlImage = `http://192.168.1.49:3000/LibSeat/uploadPhoto`;
 
+        if (password !== confirmPassword) {
+            Alert.alert("Passwords do not match!");
+            return;
+        }
 
+        if (isGreenSelected === false) {
+            Alert.alert("Please accept the terms of use and privacy policy!");
+            return;
+        }
         // if (isSavedImage === true) {
         try {
             await axios.post(url, studentInfos);
@@ -79,7 +87,7 @@ export default function CreateAccount() {
             //     },
             // });
 
-            Alert.alert("Register request is successfully sent!");
+            Alert.alert("Verify link sent! Please check your email and verify .");
             navigation.goBack(); // Navigate to the login page after successful sign-up
 
         } catch (error) {
@@ -212,7 +220,13 @@ export default function CreateAccount() {
                                 onPress={() => setIsGreenSelected(!isGreenSelected)}
                                 container={styles.checkBox}
                             />
-                            <Text> Terms of Use and Privacy Policy</Text>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Privacy') }}><Text style={{
+                                fontSize: 13,
+                                textDecorationLine: 'underline',
+                                color: '#B61938',
+
+                            }}> Terms of Use and Privacy Policy</Text></TouchableOpacity>
+
                         </View>
                         <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
                             <ImageBackground

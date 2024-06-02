@@ -232,7 +232,8 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        fontSize: 12,
+        fontSize: 15,
+
     },
     inputContainerDown: {
         flexDirection: 'row',

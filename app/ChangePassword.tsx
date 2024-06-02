@@ -8,8 +8,12 @@ import LoginPage from './LoginPage';
 
 
 
-export default function Profile() {
+export default function ChangePassword() {
     const navigation = useNavigation();
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
 
     const [userMail, setUserMail] = useState('');
 
@@ -76,10 +80,48 @@ export default function Profile() {
             </View>
             <View style={styles.ProfilePageContainer}>
 
+                <View style={{
+                    width: '70%',
+                    justifyContent: 'flex-start',
+                    paddingBottom: 20,
+                }}>
+                    <Text style={{ fontSize: 15, fontWeight: '600' }}>Set a new password</Text>
+                </View>
+
+                <View style={styles.inputs}>
+                    <Icon2 name="lock-closed" size={30} color="black" />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry={passwordVisible}
+                        />
+                        <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setPasswordVisible(!passwordVisible)}>
+                            <Icon2 name={passwordVisible ? "eye-off" : "eye"} size={18} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.inputs}>
+                    <Icon2 name="lock-closed" size={30} color="black" />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            secureTextEntry={confirmPasswordVisible}
+                        />
+                        <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
+                            <Icon2 name={confirmPasswordVisible ? "eye-off" : "eye"} size={18} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
 
 
                 {/* yukarı logo kısmı*/}
-                <View style={{
+                {/* <View style={{
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
@@ -89,55 +131,28 @@ export default function Profile() {
                     <Text style={{
                         fontSize: 12
                     }}>only for IZTECH</Text>
-                </View>
+                </View> */}
                 {/* 
                 içerik buraya doldur
                 */}
-                <TouchableOpacity style={{
-                    width: 225,
-                    height: 50,
-                    borderWidth: 1,
-                    borderRadius: 22,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 20,
-                    flexDirection: 'row'
 
-                }} >
-                    <Text style={{ marginRight: 30 }}> See Working History</Text>
-                    <Icon2 name="chevron-forward-circle" size={25} color='#B61938' />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={{
-                    width: 225,
-                    height: 50,
-                    borderWidth: 1,
-                    borderRadius: 22,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 20,
-                    flexDirection: 'row',
-                }} onPress={() => { navigation.navigate('ChangePassword') }}>
-                    <Text style={{ marginRight: 44 }}> Change Password</Text>
-                    <Icon2 name="chevron-forward-circle" size={25} color='#B61938' />
-                </TouchableOpacity>
 
                 {/*logout butonu*/}
-                <TouchableOpacity style={styles.LogoutButton} onPress={handleLogout}>
+                <TouchableOpacity style={styles.LogoutButton}>
                     <ImageBackground
                         source={require("../assets/images/btn_back.png")}
                         style={styles.signUpBack}
                         resizeMode="cover"
                         imageStyle={styles.loginImageStyle}
                     >
-                        <Text style={styles.signUpText}>LOG OUT</Text>
+                        <Text style={styles.signUpText}>Update Password</Text>
                     </ImageBackground>
                 </TouchableOpacity>
-                <View style={styles.downLinks}>
+                {/* <View style={styles.downLinks}>
                     <TouchableOpacity onPress={() => navigation.navigate('Community')}><Text>Community</Text></TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('Privacy')}><Text>Privacy</Text></TouchableOpacity>
 
-                </View>
+                </View> */}
             </View>
 
 
@@ -177,12 +192,12 @@ const styles = StyleSheet.create({
     },
     LogoutButton: {
         borderRadius: 12,
-        width: 150,
+        width: '70%',
         marginRight: 30,
     },
     signUpText: {
         color: '#fff',
-        fontSize: 20,
+        fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'center',
     },
@@ -193,7 +208,7 @@ const styles = StyleSheet.create({
 
     signUpBack: {
         width: '100%',
-        height: 30,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50,
@@ -205,5 +220,27 @@ const styles = StyleSheet.create({
         width: 260,
         marginTop: 40,
         // top: 55,
+    }, inputs: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "80%",
+    },
+    inputContainer: {
+        width: '80%',
+        height: '60%',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        padding: 10,
+        marginVertical: 6,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: 'black',
+        borderWidth: 1,
+        elevation: 5,
+    },
+    input: {
+        flex: 1,
+        fontSize: 15,
     },
 })

@@ -129,7 +129,7 @@ export default function CreateAccount() {
                             <View style={styles.inputContainer}>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="StudentID"
+                                    placeholder="Student ID"
                                     value={StudentID}
                                     onChangeText={setStudentID}
                                     keyboardType="numeric"
@@ -168,7 +168,7 @@ export default function CreateAccount() {
                             <View style={styles.inputContainer}>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="05XXYYYZZZZ"
+                                    placeholder="05051112233"
                                     value={phoneNumber}
                                     onChangeText={setPhoneNumber}
                                     keyboardType="phone-pad"

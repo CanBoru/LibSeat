@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ImageBackground, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { ImageBackground, Text, View, StyleSheet, TouchableOpacity, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 import LoginPage from './LoginPage';
@@ -17,6 +18,7 @@ import PhotoTaking from './PhotoTaking';
 import { SplashScreen } from 'expo-router';
 import Privacy from './Privacy';
 import Community from './Community';
+import ChangePassword from './ChangePassword';
 
 
 export default function index() {
@@ -102,55 +104,71 @@ export default function index() {
             <Stack.Screen
                 name='APRoom'
                 component={APRoom}
-                options={{
+                options={({ navigation }) => ({
                     headerShown: true,
                     headerBackButtonMenuEnabled: true,
                     headerTransparent: true,
                     headerTintColor: '#FFFFFF',
                     headerTitle: 'A-P Room',
                     headerTitleAlign: 'center',
-                }} />
+                    headerRight: () => (
+                        <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
+                            <Icon name="user-circle-o" size={35} color="white" />
+                        </TouchableOpacity>
+                    ),
+                })} />
             <Stack.Screen
                 name='QZRoom'
                 component={QZRoom}
-                options={{
+                options={({ navigation }) => ({
                     headerShown: true,
                     headerBackButtonMenuEnabled: true,
                     headerTransparent: true,
                     headerTintColor: '#FFFFFF',
                     headerTitle: 'Q-Z Room',
                     headerTitleAlign: 'center',
-                }} />
+                    headerRight: () => (
+                        <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
+                            <Icon name="user-circle-o" size={35} color="white" />
+                        </TouchableOpacity>
+                    ),
+                })} />
             <Stack.Screen
                 name='Privacy'
                 component={Privacy}
                 options={{
                     headerShown: true,
+                    headerShadowVisible: true,
                     headerBackButtonMenuEnabled: true,
                     headerTransparent: true,
-                    headerTintColor: 'black',
+                    headerTintColor: 'white',
                 }} />
             <Stack.Screen
                 name='Community'
                 component={Community}
                 options={{
                     headerShown: true,
+                    headerShadowVisible: true,
                     headerBackButtonMenuEnabled: true,
                     headerTransparent: true,
-                    headerTintColor: 'black',
+                    headerTintColor: 'white',
                 }} />
-            {/* <Stack.Screen
-                name='PhotoTaking'
-                component={PhotoTaking}
-                options={{
+            <Stack.Screen
+                name='ChangePassword'
+                component={ChangePassword}
+                options={({ navigation }) => ({
                     headerShown: true,
                     headerBackButtonMenuEnabled: true,
                     headerTransparent: true,
                     headerTintColor: '#FFFFFF',
-                    headerTitle: 'PhotoTaking',
-                    headerTitleAlign: 'center',
-                    fullScreenGestureEnabled: true,
-                }} /> */}
+                    headerTitle: '',
+                    headerTitleAlign: 'left',
+                    // headerRight: () => (
+                    //     <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
+                    //         <Icon name="user-circle-o" size={35} color="white" />
+                    //     </TouchableOpacity>
+                    // ),
+                })} />
         </Stack.Navigator>
     )
 }

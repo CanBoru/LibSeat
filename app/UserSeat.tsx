@@ -12,6 +12,18 @@ export default function UserSeat({ route, navigation }) {
 
     console.log('userseat :', seatId, roomName);
 
+    const [tempMail, setTempMail] = useState('');
+
+
+    const handleMail = async () => {
+        const loggedUserStr = await AsyncStorage.getItem('token');
+        const loggedUser = JSON.parse(loggedUserStr);
+        const userEmail = loggedUser.mail;
+
+        setTempMail(userEmail)
+    }
+
+    handleMail();
 
     const handleLeave = async () => {
 
@@ -49,9 +61,9 @@ export default function UserSeat({ route, navigation }) {
                     color: "white",
                     fontSize: 15,
                     fontWeight: "400",
-                    marginLeft: 40,
+                    marginLeft: 30,
                     marginTop: 100
-                }}>student@std.iyte.edu.tr</Text>
+                }}>{tempMail}</Text>
             </View>
             <View style={styles.ProfilePageContainer}>
                 {/* seat a number*/}

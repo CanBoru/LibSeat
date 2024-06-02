@@ -64,6 +64,11 @@ export default function CreateAccount() {
             Alert.alert("Passwords do not match!");
             return;
         }
+
+        if (isGreenSelected === false) {
+            Alert.alert("Please accept the terms of use and privacy policy!");
+            return;
+        }
         // if (isSavedImage === true) {
         try {
             await axios.post(url, studentInfos);
@@ -215,7 +220,13 @@ export default function CreateAccount() {
                                 onPress={() => setIsGreenSelected(!isGreenSelected)}
                                 container={styles.checkBox}
                             />
-                            <Text> Terms of Use and Privacy Policy</Text>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Privacy') }}><Text style={{
+                                fontSize: 13,
+                                textDecorationLine: 'underline',
+                                color: '#B61938',
+
+                            }}> Terms of Use and Privacy Policy</Text></TouchableOpacity>
+
                         </View>
                         <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
                             <ImageBackground

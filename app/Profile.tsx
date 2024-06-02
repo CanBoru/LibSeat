@@ -1,12 +1,26 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoginPage from './LoginPage';
 
+
+
 export default function Profile() {
     const navigation = useNavigation();
+
+    const [userMail, setUserMail] = useState('');
+
+    const handleMail = async () => {
+        const loggedUserStr = await AsyncStorage.getItem('token');
+        const loggedUser = JSON.parse(loggedUserStr);
+        const userEmail = loggedUser.mail;
+
+        setUserMail(userEmail)
+    }
+
+    handleMail();
 
     const handleLogout = () => {
         console.log('logged out');
@@ -47,15 +61,16 @@ export default function Profile() {
             </View>
 
 
-            <View style={{ marginTop: 50 }}>
+            <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{
                     width: 200,
                     color: "white",
                     fontSize: 15,
                     fontWeight: "400",
-                    marginLeft: 40,
-                    marginTop: 100
-                }}>student@std.iyte.edu.tr</Text>
+                    marginTop: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>{userMail}</Text>
             </View>
             <View style={styles.ProfilePageContainer}>
 

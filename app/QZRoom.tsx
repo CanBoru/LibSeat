@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ImageBackground, Image, View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Ionicons';
@@ -41,7 +41,11 @@ export default function QZRoom() {
     const [refresh, setRefresh] = useState(false);
 
 
+    const scrollViewRef = useRef();
 
+    useEffect(() => {
+        scrollViewRef.current.scrollToEnd({ animated: false });
+    }, []);
 
     useEffect(() => {
         // const createSeats = async () => {
@@ -207,7 +211,7 @@ export default function QZRoom() {
             </View>
 
             {/*SEATS*/}
-            <ScrollView style={styles.ProfilePageContainer} >
+            <ScrollView ref={scrollViewRef} style={styles.ProfilePageContainer} >
 
                 {/* refresh page button*/}
                 <View style={{ position: 'absolute', top: 10, right: 15 }}>
@@ -268,7 +272,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -288,7 +292,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -312,7 +316,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -332,7 +336,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -356,7 +360,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -376,7 +380,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -445,7 +449,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -465,7 +469,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -489,7 +493,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -509,7 +513,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -533,7 +537,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >
@@ -553,7 +557,7 @@ export default function QZRoom() {
                                     styles.seat,
                                     seat.id === reservedSeat ? styles.userReservedSeat :
                                         seat.reserved ? styles.reservedSeat : styles.availableSeat,
-                                    (index === 2) && { marginRight: 50 },
+                                    (index === 2) && { marginRight: 80 },
                                 ]}
                                 onPress={() => handleSeatPress(seat.id)}
                             >

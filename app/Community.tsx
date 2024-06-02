@@ -7,31 +7,34 @@ interface CommunityProps {
 
 const Community: React.FC<CommunityProps> = ({ navigation }) => {
     return (
-        <ScrollView style={styles.container}>
+        <View style={{ marginTop: 100, height: '100%' }}>
+            <ScrollView style={styles.container}>
 
-            <Text style={styles.paragraph}>
-                Welcome to the IYTE Community! This application is built on the trust and cooperation of IYTE students. It is designed to foster a sense of community and support among students, without the imposition of strict rules.
-            </Text>
+                <Text style={styles.paragraph}>
+                    Welcome to the IYTE Community! This application is built on the trust and cooperation of IYTE students. It is designed to foster a sense of community and support among students, without the imposition of strict rules.
+                </Text>
 
-            <Text style={styles.paragraph}>
-                Here, you can:
-            </Text>
+                <Text style={styles.paragraph}>
+                    Here, you can:
+                </Text>
 
-            <Text style={styles.listItem}>- Reserve study desks in the library</Text>
-            <Text style={styles.listItem}>- View available study spaces in real-time</Text>
+                <Text style={styles.listItem}>- Reserve study desks in the library</Text>
+                <Text style={styles.listItem}>- View available study spaces in real-time</Text>
 
-            <Text style={styles.paragraph}>
-                Our goal is to create a supportive and collaborative environment where every student can efficiently use the library resources. While we do not impose strict rules, we encourage everyone to respect each other's reservations and maintain a positive and cooperative community spirit.
-            </Text>
+                <Text style={styles.paragraph}>
+                    Our goal is to create a supportive and collaborative environment where every student can efficiently use the library resources. While we do not impose strict rules, we encourage everyone to respect each other's reservations and maintain a positive and cooperative community spirit.
+                </Text>
 
-            <Text style={styles.paragraph}>
-                Thank you for being a part of the IYTE LibSeat Community!
-            </Text>
+                <Text style={styles.paragraph}>
+                    Thank you for being a part of the IYTE LibSeat Community!
+                </Text>
 
-            <Text style={{ fontSize: 15, fontWeight: '500', alignItems: 'center', justifyContent: 'center', paddingTop: 40 }}>
-                LibSeat Development Team from the IZTECH.
-            </Text>
-        </ScrollView>
+                <Text style={{ fontSize: 15, fontWeight: '500', alignItems: 'center', justifyContent: 'center', paddingTop: 40 }}>
+                    LibSeat Development Team from the IZTECH.
+                </Text>
+            </ScrollView>
+        </View>
+
     );
 };
 

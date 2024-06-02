@@ -60,7 +60,10 @@ export default function CreateAccount() {
         const url = 'http://192.168.1.49:3000/LibSeat/createStudent';
         //const urlImage = `http://192.168.1.49:3000/LibSeat/uploadPhoto`;
 
-
+        if (password !== confirmPassword) {
+            Alert.alert("Passwords do not match!");
+            return;
+        }
         // if (isSavedImage === true) {
         try {
             await axios.post(url, studentInfos);
@@ -79,7 +82,7 @@ export default function CreateAccount() {
             //     },
             // });
 
-            Alert.alert("Register request is successfully sent!");
+            Alert.alert("Verify link sent! Please check your email and verify .");
             navigation.goBack(); // Navigate to the login page after successful sign-up
 
         } catch (error) {

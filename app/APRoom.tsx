@@ -102,11 +102,13 @@ export default function APRoom() {
 
                 });
 
-                const userData = userResponse.data.seatId;
+                const userData = userResponse.data;
 
-                if (userData) {
-                    setReservedSeat(userData);
+                if (userData.seatId && userData.roomName === "A-P Room") {
+                    setReservedSeat(userData.seatId);
                     console.log("birinci", reservedSeat);
+                } else if (userData.seatId && userData.roomName !== null) {
+                    setReservedSeat(0);
                 }
             } catch (error) {
                 console.error('Error fetching user seat:', error);

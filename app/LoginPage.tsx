@@ -135,7 +135,7 @@ export default function LoginPage() {
                     </View>
                 </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10, marginLeft: 20, marginBottom: 20 }}>
                     <Text>Don't you have an account? </Text>
                     <View>
                         <TouchableOpacity onPress={handlePress}>
@@ -145,8 +145,9 @@ export default function LoginPage() {
                 </View>
 
                 <View style={styles.downLinks}>
-                    <Text>Community</Text>
-                    <Text>Privacy</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Community')}><Text>Community</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Privacy')}><Text>Privacy</Text></TouchableOpacity>
+
                 </View>
 
             </View>
@@ -174,14 +175,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "flex-start",
         padding: 20,
         borderRadius: 10,
     },
     welcome: {
         marginTop: 60,
         marginBottom: 20,
-        justifyContent: "center",
+        flex: 1,
+        justifyContent: "flex-end",
         alignItems: "flex-start",
     },
     text: {
@@ -258,7 +260,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: 260,
-        top: 55,
+        marginTop: 40,
+        // top: 55,
     },
     signUpButton: {
         borderRadius: 12,

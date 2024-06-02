@@ -15,6 +15,8 @@ import APRoom from './APRoom';
 import QZRoom from './QZRoom';
 import PhotoTaking from './PhotoTaking';
 import { SplashScreen } from 'expo-router';
+import Privacy from './Privacy';
+import Community from './Community';
 
 
 export default function index() {
@@ -118,6 +120,24 @@ export default function index() {
                     headerTintColor: '#FFFFFF',
                     headerTitle: 'Q-Z Room',
                     headerTitleAlign: 'center',
+                }} />
+            <Stack.Screen
+                name='Privacy'
+                component={Privacy}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: 'black',
+                }} />
+            <Stack.Screen
+                name='Community'
+                component={Community}
+                options={{
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: 'black',
                 }} />
             {/* <Stack.Screen
                 name='PhotoTaking'

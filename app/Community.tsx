@@ -13,7 +13,7 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
                 <ScrollView style={styles.container}>
 
                     <Text style={styles.paragraph}>
-                        Welcome to the IYTE Community! This application is built on the trust and cooperation of IYTE students. It is designed to foster a sense of community and support among students, without the imposition of strict rules.
+                        Welcome to the IYTE LibSeat Community! This application is built on the trust and cooperation of IYTE students. It is designed to foster a sense of community and support among students, without the imposition of strict rules.
                     </Text>
 
                     <Text style={styles.paragraph}>

@@ -24,8 +24,6 @@ export default function Profile() {
     handleMail();
 
     const handleLogout = () => {
-        console.log('logged out');
-
         Alert.alert('Log Out!', 'Are you sure you want to log out?', [
             {
                 text: 'Cancel',
@@ -103,7 +101,7 @@ export default function Profile() {
                     marginBottom: 20,
                     flexDirection: 'row'
 
-                }} >
+                }} onPress={() => { navigation.navigate('HistoryPage') }}>
                     <Text style={{ marginRight: 30 }}> See Working History</Text>
                     <Icon2 name="chevron-forward-circle" size={25} color='#B61938' />
                 </TouchableOpacity>
@@ -134,13 +132,11 @@ export default function Profile() {
                     </ImageBackground>
                 </TouchableOpacity>
                 <View style={styles.downLinks}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Community')}><Text>Community</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Privacy')}><Text>Privacy</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Community')}><Text style={styles.linkText}>Community</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Privacy')}><Text style={styles.linkText}>Privacy</Text></TouchableOpacity>
 
                 </View>
             </View>
-
-
         </ImageBackground>
     )
 }
@@ -177,7 +173,7 @@ const styles = StyleSheet.create({
     },
     LogoutButton: {
         borderRadius: 12,
-        width: 150,
+        width: '57%',
         marginRight: 30,
     },
     signUpText: {
@@ -205,5 +201,9 @@ const styles = StyleSheet.create({
         width: 260,
         marginTop: 40,
         // top: 55,
-    },
+    }, linkText: {
+        color: '#B61938',
+        fontSize: 14,
+        textAlign: 'center',
+    }
 })

@@ -30,7 +30,7 @@ export default function UserSeat({ route, navigation }) {
         const loggedUserStr = await AsyncStorage.getItem('token');
         const loggedUser = JSON.parse(loggedUserStr);
         const userEmail = loggedUser.mail;
-        axios.put('http://192.168.1.49:3000/LibSeat/deallocateSeat', {
+        axios.put('http://10.8.48.201:3000/LibSeat/deallocateSeat', {
             roomName: roomName,
             seatId: seatId,
             studentMail: userEmail

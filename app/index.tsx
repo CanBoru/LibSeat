@@ -19,6 +19,7 @@ import { SplashScreen } from 'expo-router';
 import Privacy from './Privacy';
 import Community from './Community';
 import ChangePassword from './ChangePassword';
+import HistoryPage from './HistoryPage';
 
 
 export default function index() {
@@ -162,6 +163,22 @@ export default function index() {
                     headerTransparent: true,
                     headerTintColor: '#FFFFFF',
                     headerTitle: '',
+                    headerTitleAlign: 'left',
+                    // headerRight: () => (
+                    //     <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
+                    //         <Icon name="user-circle-o" size={35} color="white" />
+                    //     </TouchableOpacity>
+                    // ),
+                })} />
+            <Stack.Screen
+                name='HistoryPage'
+                component={HistoryPage}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: ' Working History',
                     headerTitleAlign: 'left',
                     // headerRight: () => (
                     //     <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>

@@ -27,6 +27,8 @@ export default function ChangePassword() {
 
     handleMail();
 
+
+    {/* Burada Update Password handle edilecek*/ }
     const handleLogout = () => {
         console.log('logged out');
 
@@ -85,7 +87,7 @@ export default function ChangePassword() {
                     justifyContent: 'flex-start',
                     paddingBottom: 20,
                 }}>
-                    <Text style={{ fontSize: 15, fontWeight: '600' }}>Set a new password</Text>
+                    <Text style={{ fontSize: 15, fontWeight: '700' }}>Set a new password</Text>
                 </View>
 
                 <View style={styles.inputs}>
@@ -228,7 +230,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: '80%',
-        height: '60%',
+        height: '70%',
         backgroundColor: '#fff',
         borderRadius: 8,
         padding: 10,

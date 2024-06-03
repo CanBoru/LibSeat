@@ -11,60 +11,25 @@ import CreateAccount from './CreateAccount';
 
 
 
-export default function LoginPage() {
+export default function ForgetPassword() {
     const navigation = useNavigation();
 
     const [mail, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordVisible, setPasswordVisible] = useState(true);
 
-    const handleLogin = () => {
-        const credentials = { mail, password }; // E-posta ve şifre bilgilerini nesne olarak toplayın
-        const url = 'http://192.168.1.49:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
 
-        axios.post(url, credentials)
-            .then((response) => {
-                const result = response.data;
-                console.log(result);
-                const { status, loggedUser } = result;
-
-                if (status === 'success') {
-                    console.log('Logged User:', loggedUser);
-                    Alert.alert('Logged in successful!');
-                    AsyncStorage.setItem('token', JSON.stringify(loggedUser));
-                    AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-                    navigation.navigate(MainPage);
-                } else {
-                    console.log('Login Failed');
-                    Alert.alert('Login Failed');
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                if (error.response && error.response.status === 401) {
-                    Alert.alert(error.response.data.message);
-                } else {
-                    Alert.alert('Network Error', 'An error occurred while connecting to the server.');
-                }
-            });
-
-        console.log('Email:', mail);
-        console.log('Password:', password);
+    const handleForgotPassword = async () => {
+        try {
+            await axios.post('http://192.168.1.49:3000/LibSeat/forgetPassword', { mail: mail });
+            Alert.alert('New password was sent to your email!');
+        } catch (error) {
+            console.log(error);
+            if (error.response && error.response.status === 400) {
+                Alert.alert(error.response.data.message);
+            } else {
+                Alert.alert('Network Error', 'An error occurred while connecting to the server.');
+            }
+        }
     };
-
-
-    const handleForgotPassword = () => {
-        navigation.navigate('ForgetPassword');
-        console.log('Forgot Password Request');
-    };
-    const handlePress = () => {
-        navigation.navigate(CreateAccount);
-
-    };
-    const handleGradPress = () => {
-        Alert.alert('Button Pressed!');
-    };
-
 
     return (
         <ImageBackground
@@ -77,7 +42,7 @@ export default function LoginPage() {
                 style={styles.container}
             >
                 <View style={styles.welcome}>
-                    <Text style={styles.text}>Welcome!</Text>
+                    <Text style={styles.text}>Please enter your email!</Text>
                 </View>
 
                 <View style={styles.signInContainer}>
@@ -96,53 +61,16 @@ export default function LoginPage() {
                         </View>
                     </View>
 
-                    <View style={styles.inputs}>
-                        <Icon name="lock-closed" size={30} color="black" />
-                        <View style={styles.inputContainer}>
-
-                            <TextInput
-                                style={styles.input}
-                                placeholder="password"
-                                value={password}
-                                onChangeText={setPassword}
-                                secureTextEntry={passwordVisible}
-                            />
-                            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setPasswordVisible(!passwordVisible)}>
-                                <Icon name={passwordVisible ? "eye-off" : "eye"} size={18} color="black" />
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-
-
-                    <View style={styles.inputContainerDown}>
-                        <TouchableOpacity onPress={handleForgotPassword}>
-                            <Text style={styles.forgotPassword}>Forget password?</Text>
-                        </TouchableOpacity>
-
-                        <View style={styles.den1} >
-                            <TouchableOpacity style={[
-                                styles.loginButton,
-                                (!mail || !password) ? { opacity: 0.5 } : {}
-                            ]} onPress={handleLogin}>
-                                <ImageBackground
-                                    source={require("../assets/images/btn_back.png")}
-                                    style={styles.den2}
-                                    resizeMode="cover"
-                                    imageStyle={styles.loginImageStyle}
-                                >
-                                    <Text style={styles.buttonText}>Login</Text>
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10, marginLeft: 20, marginBottom: 20 }}>
-                    <Text>Don't you have an account? </Text>
-                    <View>
-                        <TouchableOpacity onPress={handlePress}>
-                            <Text style={styles.signUpText}>Register</Text>
+                    <View style={styles.den1} >
+                        <TouchableOpacity style={styles.loginButton} onPress={() => { handleForgotPassword() }}>
+                            <ImageBackground
+                                source={require("../assets/images/btn_back.png")}
+                                style={styles.den2}
+                                resizeMode="cover"
+                                imageStyle={styles.loginImageStyle}
+                            >
+                                <Text style={styles.buttonText}>Send new password!</Text>
+                            </ImageBackground>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -183,17 +111,17 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     welcome: {
+        width: 200,
         marginTop: 60,
-        marginBottom: 20,
         flex: 1,
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         alignItems: "flex-start",
     },
     text: {
         color: "white",
         fontSize: 35,
         fontWeight: "bold",
-        textAlign: "center",
+        textAlign: "left",
         textShadowColor: 'rgba(0, 0, 0, 0.5)',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 6,
@@ -207,9 +135,9 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     signInContainer: {
-        marginBottom: 25,
+        marginBottom: 100,
         width: 260,
-        height: 200,
+        height: 170,
         backgroundColor: "white",
         borderRadius: 15,
         elevation: 5,
@@ -218,6 +146,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        marginTop: 15,
     },
 
     inputContainer: {
@@ -252,8 +181,8 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         paddingHorizontal: 3,
-        width: '80%',
-        height: 26,
+        width: '90%',
+        height: 35,
     },
     buttonText: {
         color: '#fff',
@@ -278,7 +207,8 @@ const styles = StyleSheet.create({
     },
     den1: {
         flex: 1,
-        marginLeft: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     den2: {
         flex: 1,

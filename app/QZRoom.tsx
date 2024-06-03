@@ -205,10 +205,10 @@ export default function QZRoom() {
             style={styles.background}>
 
 
-            {/*PROFILE ICON*/}
+            {/* PROFILE ICON
             <View style={styles.profile_icon} >
                 <Icon name="user-circle-o" size={35} color="white" />
-            </View>
+            </View> */}
 
             {/*SEATS*/}
             <ScrollView ref={scrollViewRef} style={styles.ProfilePageContainer} >
@@ -216,7 +216,7 @@ export default function QZRoom() {
                 {/* refresh page button*/}
                 <View style={{ position: 'absolute', top: 10, right: 15 }}>
                     <TouchableOpacity onPress={() => setRefresh(!refresh)} >
-                        <Icon2 name="refresh-outline" size={35} color="black" />
+                        <Icon2 name="sync" size={35} color="black" />
                     </TouchableOpacity>
                 </View>
 
@@ -721,7 +721,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        marginTop: 90,
+        marginTop: 100,
     },
     row: {
         flexDirection: 'row',

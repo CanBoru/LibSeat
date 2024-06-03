@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { ImageBackground, Text, View, StyleSheet, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 import LoginPage from './LoginPage';
 
 
@@ -23,8 +24,6 @@ export default function Profile() {
     handleMail();
 
     const handleLogout = () => {
-        console.log('logged out');
-
         Alert.alert('Log Out!', 'Are you sure you want to log out?', [
             {
                 text: 'Cancel',
@@ -67,6 +66,7 @@ export default function Profile() {
                     color: "white",
                     fontSize: 15,
                     fontWeight: "400",
+                    marginLeft: 30,
                     marginTop: 100,
                     alignItems: 'center',
                     justifyContent: 'center'
@@ -74,12 +74,14 @@ export default function Profile() {
             </View>
             <View style={styles.ProfilePageContainer}>
 
+
+
                 {/* yukarı logo kısmı*/}
                 <View style={{
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginBottom: 20
+                    paddingBottom: 150,
                 }}>
                     <Image source={require("../assets/images/libseat_logo.png")} style={styles.reg_logo} />
                     <Text style={{
@@ -89,6 +91,34 @@ export default function Profile() {
                 {/* 
                 içerik buraya doldur
                 */}
+                <TouchableOpacity style={{
+                    width: 225,
+                    height: 50,
+                    borderWidth: 1,
+                    borderRadius: 22,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 20,
+                    flexDirection: 'row'
+
+                }} onPress={() => { navigation.navigate('HistoryPage') }}>
+                    <Text style={{ marginRight: 30 }}> See Working History</Text>
+                    <Icon2 name="chevron-forward-circle" size={25} color='#B61938' />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{
+                    width: 225,
+                    height: 50,
+                    borderWidth: 1,
+                    borderRadius: 22,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 20,
+                    flexDirection: 'row',
+                }} onPress={() => { navigation.navigate('ChangePassword') }}>
+                    <Text style={{ marginRight: 44 }}> Change Password</Text>
+                    <Icon2 name="chevron-forward-circle" size={25} color='#B61938' />
+                </TouchableOpacity>
 
                 {/*logout butonu*/}
                 <TouchableOpacity style={styles.LogoutButton} onPress={handleLogout}>
@@ -101,10 +131,12 @@ export default function Profile() {
                         <Text style={styles.signUpText}>LOG OUT</Text>
                     </ImageBackground>
                 </TouchableOpacity>
+                <View style={styles.downLinks}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Community')}><Text style={styles.linkText}>Community</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Privacy')}><Text style={styles.linkText}>Privacy</Text></TouchableOpacity>
 
+                </View>
             </View>
-
-
         </ImageBackground>
     )
 }
@@ -141,7 +173,7 @@ const styles = StyleSheet.create({
     },
     LogoutButton: {
         borderRadius: 12,
-        width: 150,
+        width: '57%',
         marginRight: 30,
     },
     signUpText: {
@@ -163,5 +195,15 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginTop: 50,
         marginLeft: 20
-    },
+    }, downLinks: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 260,
+        marginTop: 40,
+        // top: 55,
+    }, linkText: {
+        color: '#B61938',
+        fontSize: 14,
+        textAlign: 'center',
+    }
 })

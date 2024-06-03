@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import UserSeat from './UserSeat';
+import Profile from './Profile';
 
 
 export default function APRoom() {
@@ -204,10 +205,15 @@ export default function APRoom() {
             style={styles.background}>
 
 
-            {/*PROFILE ICON*/}
-            <View style={styles.profile_icon} >
-                <Icon name="user-circle-o" size={35} color="white" />
-            </View>
+            {/*PROFILE ICON  */}
+
+            {/* <View style={{ position: 'absolute', top: 20, right: 15, zIndex: 2, elevation: 2 }} >
+                <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
+                    <Icon name="user-circle-o" size={35} color="white" />
+                </TouchableOpacity>
+            </View> */}
+
+
 
             {/*SEATS*/}
             <ScrollView ref={scrollViewRef} style={styles.ProfilePageContainer} >
@@ -215,7 +221,7 @@ export default function APRoom() {
                 {/* refresh page button*/}
                 <View style={{ position: 'absolute', top: 10, right: 15 }}>
                     <TouchableOpacity onPress={() => setRefresh(!refresh)} >
-                        <Icon2 name="refresh-outline" size={35} color="black" />
+                        <Icon2 name="sync" size={35} color="black" />
                     </TouchableOpacity>
                 </View>
 
@@ -703,16 +709,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
-    profile_icon: {
-        position: 'absolute',  // Position the icon absolutely
-        top: 10,
-        right: 10,
-        width: 100,  // Ensure touchable area is big enough
-        height: 100, // Ensure touchable area is big enough
-        justifyContent: 'center', // Center the icon
-        alignItems: 'center', // Center the icon
+    // profile_icon: {
+    //     position: 'absolute',  // Position the icon absolutely
+    //     top: 10,
+    //     right: 10,
+    //     width: 100,  // Ensure touchable area is big enough
+    //     height: 100, // Ensure touchable area is big enough
+    //     justifyContent: 'center', // Center the icon
+    //     alignItems: 'center', // Center the icon
 
-    },
+    // },
     ProfilePageContainer: {
         flex: 1,
         flexDirection: "column",
@@ -720,7 +726,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        marginTop: 90,
+        marginTop: 100,
     },
     row: {
         flexDirection: 'row',

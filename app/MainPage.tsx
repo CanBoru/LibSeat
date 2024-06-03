@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import APRoom from './APRoom';
 import QZRoom from './QZRoom';
 import Profile from './Profile';
+import PeriodicalPage from './PeriodicalPage';
 
 export default function MainPage() {
     const navigation = useNavigation();
@@ -17,8 +18,12 @@ export default function MainPage() {
         navigation.navigate(QZRoom);
     }
 
-    const handleProfile = () => {
-        navigation.navigate(Profile);
+    // const handleProfile = () => {
+    //     navigation.navigate(Profile);
+    // }
+
+    const handlePer = () => {
+        navigation.navigate(PeriodicalPage);
     }
 
     const handleBackPress = () => {
@@ -85,7 +90,7 @@ export default function MainPage() {
                     fontSize: 20,
                     color: "white",
                 }}>Ground Floor</Text>
-                <TouchableOpacity style={styles.floorBtn}>
+                <TouchableOpacity style={styles.floorBtn} onPress={handlePer}>
                     <Text style={{ fontSize: 20, paddingLeft: 20, }}>Periodical Publication</Text>
                 </TouchableOpacity>
             </View>

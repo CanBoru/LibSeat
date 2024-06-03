@@ -60,6 +60,11 @@ export default function CreateAccount() {
         const url = 'http://192.168.1.49:3000/LibSeat/createStudent';
         //const urlImage = `http://192.168.1.49:3000/LibSeat/uploadPhoto`;
 
+        if (password.length < 8 || confirmPassword.length < 8) {
+            Alert.alert("Passwords must be at least 8 characters long!");
+            return;
+        }
+
         if (password !== confirmPassword) {
             Alert.alert("Passwords do not match!");
             return;

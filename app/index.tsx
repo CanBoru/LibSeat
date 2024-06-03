@@ -21,6 +21,7 @@ import Community from './Community';
 import ChangePassword from './ChangePassword';
 import HistoryPage from './HistoryPage';
 import ForgetPassword from './ForgetPassword';
+import PeriodicalPage from './PeriodicalPage';
 
 
 export default function index() {
@@ -165,11 +166,7 @@ export default function index() {
                     headerTintColor: '#FFFFFF',
                     headerTitle: '',
                     headerTitleAlign: 'left',
-                    // headerRight: () => (
-                    //     <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
-                    //         <Icon name="user-circle-o" size={35} color="white" />
-                    //     </TouchableOpacity>
-                    // ),
+
                 })} />
             <Stack.Screen
                 name='ForgetPassword'
@@ -197,6 +194,23 @@ export default function index() {
                     //         <Icon name="user-circle-o" size={35} color="white" />
                     //     </TouchableOpacity>
                     // ),
+                })} />
+            <Stack.Screen
+                name='PeriodicalPage'
+                component={PeriodicalPage}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: '#FFFFFF',
+                    headerTitle: 'Periodical Publication',
+                    headerTitleAlign: 'left',
+                    headerRight: () => (
+                        <TouchableOpacity onPress={() => { navigation.navigate(Profile) }}>
+                            <Icon name="user-circle-o" size={35} color="white" />
+                        </TouchableOpacity>
+                    ),
+
                 })} />
         </Stack.Navigator>
     )

@@ -9,7 +9,7 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
     return (
         <ImageBackground source={require("../assets/images/page_background_v1.png")}
             style={styles.background}>
-            <View style={{ marginTop: 100, height: '100%' }}>
+            <View style={{ marginTop: 50, height: '100%' }}>
                 <ScrollView style={styles.container}>
 
                     <Text style={styles.paragraph}>
@@ -45,6 +45,8 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
                         <Text style={styles.devText}>Serhat Eren Taş</Text>
                         <Text style={styles.devText}>Yaşar Mehmet Bağdatlı</Text>
                         <Text style={styles.devText}>Hüseyin Özdemir</Text>
+
+                        <Text style={{ marginTop: 50, color: 'white' }}>info@libseat.com</Text>
 
                     </View>
                 </ScrollView>

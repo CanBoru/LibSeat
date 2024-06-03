@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     },
     pageContent: {
         flex: 1,
-        marginLeft: 10,
+        marginLeft: 6,
         marginTop: 100,
     },
     blockContent: {

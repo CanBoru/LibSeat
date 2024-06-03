@@ -118,8 +118,16 @@ export default function APRoom() {
                 console.error('Error fetching user seat:', error);
             }
         }
+
+        // const intervalId = setInterval(() => {
+        //     fetchSeats();
+        //     fechSelectedSeat();
+        // }, 8000); // Refresh every 8 seconds
+
         fetchSeats();
         fechSelectedSeat();
+
+        // return () => clearInterval(intervalId); // Clear interval on component unmount
 
     }, [refresh]);
 

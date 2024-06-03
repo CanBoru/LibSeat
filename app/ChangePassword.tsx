@@ -5,13 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import LoginPage from './LoginPage';
+import axios from 'axios';
 
 
 
 export default function ChangePassword() {
     const navigation = useNavigation();
+    const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [oldPasswordVisible, setOldPasswordVisible] = useState(true);
     const [passwordVisible, setPasswordVisible] = useState(true);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
 
@@ -24,38 +27,32 @@ export default function ChangePassword() {
 
         setUserMail(userEmail)
     }
-
     handleMail();
 
 
+
     {/* Burada Update Password handle edilecek*/ }
-    const handleLogout = () => {
-        console.log('logged out');
+    const handleUpdatePassword = async () => {
+        if (password === confirmPassword) {
+            try {
+                const response = await axios.post('http://192.168.1.49:3000/LibSeat/changePassword', { mail: userMail, oldPassword: oldPassword, password1: password, password2: confirmPassword });
 
-        Alert.alert('Log Out!', 'Are you sure you want to log out?', [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel'
-            },
-            {
-                text: 'OK',
-                onPress: () => {
+                Alert.alert('Password updated successfully');
+                setOldPassword('');
+                setPassword('');
+                setConfirmPassword('');
 
-                    AsyncStorage.removeItem('token').then(() => {
-                        AsyncStorage.removeItem('isLoggedIn').then(() => {
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Login' }],
-                            });
-                        }).catch(error => console.log(error));
-
-                    }).catch(error => console.log(error));
+            } catch (error) {
+                if (error.response && error.response.status === 400) {
+                    alert(error.response.data.message);
+                } else {
+                    alert(error.message);
                 }
             }
-        ]);
-
-    }
+        } else {
+            Alert.alert('Passwords do not match!');
+        }
+    };
 
     return (
         <ImageBackground
@@ -85,9 +82,24 @@ export default function ChangePassword() {
                 <View style={{
                     width: '70%',
                     justifyContent: 'flex-start',
-                    paddingBottom: 20,
+                    paddingBottom: 6,
                 }}>
-                    <Text style={{ fontSize: 15, fontWeight: '700' }}>Set a new password</Text>
+                    <Text style={{ fontSize: 18, fontWeight: '700' }}>Set a new password</Text>
+                </View>
+                <View style={styles.inputs}>
+                    <Icon2 name="lock-closed" size={30} color="black" />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Current Password"
+                            value={oldPassword}
+                            onChangeText={setOldPassword}
+                            secureTextEntry={oldPasswordVisible}
+                        />
+                        <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 25, height: 25 }} onPress={() => setOldPasswordVisible(!oldPasswordVisible)}>
+                            <Icon2 name={oldPasswordVisible ? "eye-off" : "eye"} size={18} color="black" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <View style={styles.inputs}>
@@ -105,6 +117,7 @@ export default function ChangePassword() {
                         </TouchableOpacity>
                     </View>
                 </View>
+
                 <View style={styles.inputs}>
                     <Icon2 name="lock-closed" size={30} color="black" />
                     <View style={styles.inputContainer}>
@@ -140,7 +153,12 @@ export default function ChangePassword() {
 
 
                 {/*logout butonu*/}
-                <TouchableOpacity style={styles.LogoutButton}>
+                <TouchableOpacity style={[
+                    styles.LogoutButton,
+                    (!oldPassword || !password || !confirmPassword) ? { opacity: 0.5 } : {}
+                ]}
+                    onPress={() => { handleUpdatePassword() }}
+                    disabled={!oldPassword || !password || !confirmPassword}>
                     <ImageBackground
                         source={require("../assets/images/btn_back.png")}
                         style={styles.signUpBack}
@@ -186,6 +204,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         marginTop: 20,
+        paddingTop: 10
     },
     reg_logo: {
         width: 180,
@@ -214,7 +233,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50,
-        marginTop: 50,
+        marginTop: 30,
         marginLeft: 20
     }, downLinks: {
         flexDirection: 'row',

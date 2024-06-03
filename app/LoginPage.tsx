@@ -20,7 +20,7 @@ export default function LoginPage() {
 
     const handleLogin = () => {
         const credentials = { mail, password }; // E-posta ve şifre bilgilerini nesne olarak toplayın
-        const url = 'http://10.8.48.201:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
+        const url = 'http://192.168.1.49:3000/LibSeat/loginStudent'; // Tam URL'yi kullanın
 
         axios.post(url, credentials)
             .then((response) => {
@@ -54,7 +54,7 @@ export default function LoginPage() {
 
 
     const handleForgotPassword = () => {
-        // Şifre unutma işlemleri burada yapılacak
+        navigation.navigate('ForgetPassword');
         console.log('Forgot Password Request');
     };
     const handlePress = () => {
@@ -121,7 +121,10 @@ export default function LoginPage() {
                         </TouchableOpacity>
 
                         <View style={styles.den1} >
-                            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                            <TouchableOpacity style={[
+                                styles.loginButton,
+                                (!mail || !password) ? { opacity: 0.5 } : {}
+                            ]} onPress={handleLogin}>
                                 <ImageBackground
                                     source={require("../assets/images/btn_back.png")}
                                     style={styles.den2}

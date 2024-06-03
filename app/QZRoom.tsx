@@ -49,7 +49,7 @@ export default function QZRoom() {
 
     useEffect(() => {
         // const createSeats = async () => {
-        //     const url = 'http://10.8.48.201:3000/LibSeat/createSeat';
+        //     const url = 'http://192.168.1.49:3000/LibSeat/createSeat';
         //     const roomName = 'Q-Z Room'; // Replace with your actual room name
 
         //     for (let seatId = 1; seatId <= 92; seatId++) {
@@ -69,7 +69,7 @@ export default function QZRoom() {
         // createSeats();
 
         const fetchSeats = async () => {
-            axios.post('http://10.8.48.201:3000/LibSeat/getSeats', { roomName: 'Q-Z Room' })
+            axios.post('http://192.168.1.49:3000/LibSeat/getSeats', { roomName: 'Q-Z Room' })
                 .then(response => {
                     const data = response.data;
                     const updatedSeats = seats.map(seat => {
@@ -101,7 +101,7 @@ export default function QZRoom() {
                 const userEmail = loggedUser.mail;
                 console.log('User Email:', userEmail);
 
-                const userResponse = await axios.post('http://10.8.48.201:3000/LibSeat/getStudent', {
+                const userResponse = await axios.post('http://192.168.1.49:3000/LibSeat/getStudent', {
                     mail: userEmail,
 
                 });
@@ -126,7 +126,7 @@ export default function QZRoom() {
 
     const getSeat = async (seatId, roomName) => {
         try {
-            const response = await axios.post(`http://10.8.48.201:3000/LibSeat/getSeat`, { seatId: seatId, roomName: roomName });
+            const response = await axios.post(`http://192.168.1.49:3000/LibSeat/getSeat`, { seatId: seatId, roomName: roomName });
 
             if (response.data.seatStatus === 'Allocated') {
                 alert("This seat already allocated! Please refresh the page.")
@@ -174,7 +174,7 @@ export default function QZRoom() {
             const userEmail = loggedUser.mail;
             console.log('occupy Email:', userEmail);
 
-            axios.put('http://10.8.48.201:3000/LibSeat/allocateSeat', {
+            axios.put('http://192.168.1.49:3000/LibSeat/allocateSeat', {
                 mail: userEmail,
                 roomName: 'Q-Z Room',
                 seatId: selectedSeatId

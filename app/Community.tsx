@@ -34,6 +34,19 @@ const Community: React.FC<CommunityProps> = ({ navigation }) => {
                     <Text style={{ fontSize: 15, fontWeight: '500', alignItems: 'center', justifyContent: 'center', paddingTop: 40, color: 'white' }}>
                         LibSeat Development Team from the IZTECH.
                     </Text>
+                    <View style={{
+                        width: '100%',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 20,
+                    }}>
+                        <Text style={styles.devText}>Sıddık Can Boru</Text>
+                        <Text style={styles.devText}>Serhat Eren Taş</Text>
+                        <Text style={styles.devText}>Yaşar Mehmet Bağdatlı</Text>
+                        <Text style={styles.devText}>Hüseyin Özdemir</Text>
+
+                    </View>
                 </ScrollView>
             </View>
         </ImageBackground>
@@ -71,7 +84,13 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         textAlign: 'justify',
         color: 'white'
-    },
+    }, devText: {
+        fontSize: 15,
+        fontWeight: '500',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white'
+    }
 });
 
 export default Community;

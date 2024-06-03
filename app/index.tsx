@@ -20,6 +20,7 @@ import Privacy from './Privacy';
 import Community from './Community';
 import ChangePassword from './ChangePassword';
 import HistoryPage from './HistoryPage';
+import ForgetPassword from './ForgetPassword';
 
 
 export default function index() {
@@ -169,6 +170,17 @@ export default function index() {
                     //         <Icon name="user-circle-o" size={35} color="white" />
                     //     </TouchableOpacity>
                     // ),
+                })} />
+            <Stack.Screen
+                name='ForgetPassword'
+                component={ForgetPassword}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerBackButtonMenuEnabled: true,
+                    headerTransparent: true,
+                    headerTintColor: 'black',
+                    headerTitle: '',
+                    headerTitleAlign: 'left',
                 })} />
             <Stack.Screen
                 name='HistoryPage'

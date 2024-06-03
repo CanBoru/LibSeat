@@ -1,5 +1,5 @@
 // const createSeats = async () => {
-//     const url = 'http://10.8.48.201:3000/LibSeat/createSeat';
+//     const url = 'http://192.168.1.49:3000/LibSeat/createSeat';
 //     const roomName = 'Q-Z Room'; // Replace with your actual room name
 
 //     for (let seatId = 1; seatId <= 92; seatId++) {

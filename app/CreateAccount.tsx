@@ -57,8 +57,8 @@ export default function CreateAccount() {
         console.log('Email:', mail);
 
         const studentInfos = { mail, studentName: StudentName, studentNumber: StudentID, phoneNumber, password };
-        const url = 'http://10.8.48.201:3000/LibSeat/createStudent';
-        //const urlImage = `http://10.8.48.201:3000/LibSeat/uploadPhoto`;
+        const url = 'http://192.168.1.49:3000/LibSeat/createStudent';
+        //const urlImage = `http://192.168.1.49:3000/LibSeat/uploadPhoto`;
 
         if (password !== confirmPassword) {
             Alert.alert("Passwords do not match!");
